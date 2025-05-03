@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiOperation, ApiTags, ApiResponse } from '@nestjs/swagger';
-import { AiService } from './ai.service';
+import { AiService } from 'src/core/ai/ai.service';
 import { PromptDto } from './dto/prompt.dto';
 
 @ApiTags('AI')
