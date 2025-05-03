@@ -22,10 +22,16 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
     const errorResponse = exception.getResponse?.();
 
-    this.logger.error(
-      `Error ${status} on ${request.method} ${request.url}`,
-      exception,
-    );
+    const logMessage = `HTTP ${status} - ${request.method} ${request.url}`;
+
+    // Dynamisch loggen je nach Status
+    if (status >= 500) {
+      this.logger.error(logMessage, exception.stack);
+    } else if (status >= 400) {
+      this.logger.warn(logMessage);
+    } else {
+      this.logger.log(logMessage);
+    }
 
     response.status(status).json({
       statusCode: status,
