@@ -10,23 +10,37 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 
-@Catch(HttpException)
+@Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(GlobalExceptionFilter.name);
 
-  catch(exception: HttpException, host: ArgumentsHost) {
+  catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    const status = exception.getStatus?.() || HttpStatus.INTERNAL_SERVER_ERROR;
-    const errorResponse = exception.getResponse?.();
+    let status = HttpStatus.INTERNAL_SERVER_ERROR;
+    let message = 'Internal server error';
+    let stack: string | undefined;
+
+    if (exception instanceof HttpException) {
+      status = exception.getStatus();
+      const res = exception.getResponse();
+      if (typeof res === 'string') {
+        message = res;
+      } else if (typeof res === 'object' && res !== null) {
+        message = (res as any).message || message;
+      }
+      stack = exception.stack;
+    } else if (exception instanceof Error) {
+      message = exception.message;
+      stack = exception.stack;
+    }
 
     const logMessage = `HTTP ${status} - ${request.method} ${request.url}`;
 
-    // Dynamisch loggen je nach Status
     if (status >= 500) {
-      this.logger.error(logMessage, exception.stack);
+      this.logger.error(logMessage, stack);
     } else if (status >= 400) {
       this.logger.warn(logMessage);
     } else {
@@ -38,10 +52,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       path: request.url,
       method: request.method,
       timestamp: new Date().toISOString(),
-      error:
-        typeof errorResponse === 'string'
-          ? { message: errorResponse }
-          : errorResponse,
+      error: { message },
     });
   }
 }

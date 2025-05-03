@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AiModule } from './core/ai/ai.module';
 import { HttpModule } from '@nestjs/axios';
+import { WeatherModule } from './modules/weather/weather.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { HttpModule } from '@nestjs/axios';
       isGlobal: true,
     }),
     AiModule,
+    WeatherModule,
   ],
   controllers: [AppController],
   providers: [],
