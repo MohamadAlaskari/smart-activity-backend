@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AiModule } from './core/ai/ai.module';
 import { HttpModule } from '@nestjs/axios';
 import { WeatherModule } from './modules/weather/weather.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { WeatherModule } from './modules/weather/weather.module';
       envFilePath: ['.env', '.env.development.local', '.env.production.local'],
       isGlobal: true,
     }),
+    DatabaseModule,
     AiModule,
     WeatherModule,
   ],
