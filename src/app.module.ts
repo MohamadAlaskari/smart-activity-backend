@@ -4,7 +4,8 @@ import { AppController } from './app.controller';
 import { AiModule } from './core/ai/ai.module';
 import { HttpModule } from '@nestjs/axios';
 import { WeatherModule } from './modules/weather/weather.module';
-import { DatabaseModule } from './database/database.module';
+import { EventsModule } from './modules/events/events.module';
+//import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -13,9 +14,10 @@ import { DatabaseModule } from './database/database.module';
       envFilePath: ['.env', '.env.development.local', '.env.production.local'],
       isGlobal: true,
     }),
-    DatabaseModule,
+    //   DatabaseModule,
     AiModule,
     WeatherModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [],
