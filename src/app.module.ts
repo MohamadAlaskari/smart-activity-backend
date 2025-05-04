@@ -5,6 +5,7 @@ import { AiModule } from './core/ai/ai.module';
 import { HttpModule } from '@nestjs/axios';
 import { WeatherModule } from './modules/weather/weather.module';
 import { EventsModule } from './modules/events/events.module';
+import { DirectionsModule } from './modules/transport/directions.module';
 //import { DatabaseModule } from './database/database.module';
 
 @Module({
@@ -18,6 +19,7 @@ import { EventsModule } from './modules/events/events.module';
     AiModule,
     WeatherModule,
     EventsModule,
+    DirectionsModule,
   ],
   controllers: [AppController],
   providers: [],
