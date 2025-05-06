@@ -4,12 +4,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersModule } from '../users/users.module';
 import { AuthService } from './auth.service';
-//import { MailModule } from '../mail/mail.module';
+import { MailModule } from '../mail/mail.module';
 
 @Global()
 @Module({
   imports: [
-    // MailModule,
+    MailModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({

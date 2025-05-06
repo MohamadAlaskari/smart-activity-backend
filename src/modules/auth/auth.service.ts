@@ -6,7 +6,7 @@ import { AccessTokentype, JWTPayloadTypes } from 'src/common/utils/types/types';
 
 //import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-//import { MailService } from '../mail/mail.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +14,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private configService: ConfigService,
-    //  private readonly mailService: MailService,
+    private readonly mailService: MailService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<AccessTokentype> {
@@ -24,12 +24,16 @@ export class AuthService {
       id: createdUser.id,
       email: createdUser.email,
     });
-    /*
-    this.mailService.sendVerificationEmail(
+
+    const baseUrl =
+      this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+
+    await this.mailService.sendVerificationEmail(
       createdUser.email,
       accessToken,
-      'http://localhost:3000',
-    );*/
+      baseUrl,
+    );
+
     return { accessToken };
   }
 

@@ -11,7 +11,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
         transport: {
           host: configService.get<string>('SMTP_HOST'),
           port: configService.get<number>('SMTP_PORT'),
-          secure: false, //in Dev we use http that mean we don't want to use SSL but in production we use https the we have to use SSL
+          secure: true, //in Dev we use http that mean we don't want to use SSL but in production we use https the we have to use SSL
           auth: {
             user: configService.get<string>('SMTP_USER'),
             pass: configService.get<string>('SMTP_PASS'),
@@ -23,7 +23,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
       }),
     }),
   ],
-  providers: [],
+  providers: [MailService],
   exports: [MailService],
 })
 export class MailModule {}

@@ -11,7 +11,6 @@ export class MailService {
   async sendMail(options: MailOptions) {
     try {
       await this.mailerService.sendMail({
-        from: `<no-reply@alaskaridesign.com>`,
         to: options.to,
         subject: options.subject,
         html: options.html,
