@@ -1,0 +1,48 @@
+import { ApiProperty } from '@nestjs/swagger';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+} from 'typeorm';
+
+@Entity('users')
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  @ApiProperty({ description: 'Unique user ID' })
+  id: string;
+
+  @Column({ length: 50 })
+  @ApiProperty({ example: 'John', description: 'User first name' })
+  firstName: string;
+
+  @Column({ length: 50 })
+  @ApiProperty({ example: 'Doe', description: 'User last name' })
+  lastName: string;
+
+  @Column({ length: 50, unique: true })
+  @ApiProperty({ example: 'johndoe', description: 'Unique username' })
+  username: string;
+
+  @Column({ unique: true })
+  @ApiProperty({
+    example: 'user@example.com',
+    description: 'User email address',
+  })
+  email: string;
+
+  @Column()
+  @ApiProperty({ description: 'Hashed password' })
+  password: string;
+
+  @Column({ default: false })
+  @ApiProperty({
+    description: 'Indicates whether the user has verified their email',
+    example: false,
+  })
+  isEmailVerified: boolean;
+
+  @CreateDateColumn({ type: 'timestamp' })
+  @ApiProperty({ description: 'Timestamp when the user was created' })
+  createdAt: Date;
+}

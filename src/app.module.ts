@@ -6,7 +6,8 @@ import { HttpModule } from '@nestjs/axios';
 import { WeatherModule } from './modules/weather/weather.module';
 import { EventsModule } from './modules/events/events.module';
 import { DirectionsModule } from './modules/transport/directions.module';
-//import { DatabaseModule } from './database/database.module';
+import { UsersModule } from './modules/users/users.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -15,8 +16,9 @@ import { DirectionsModule } from './modules/transport/directions.module';
       envFilePath: ['.env', '.env.development.local', '.env.production.local'],
       isGlobal: true,
     }),
-    //   DatabaseModule,
+    DatabaseModule,
     AiModule,
+    UsersModule,
     WeatherModule,
     EventsModule,
     DirectionsModule,
