@@ -1,4 +1,3 @@
-/*
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable, RequestTimeoutException } from '@nestjs/common';
 import { MailOptions } from 'src/common/utils/types/types';
@@ -39,14 +38,12 @@ export class MailService {
   // TODO Send an Email to reset the Password
   // async sendPasswordResetEmail()
 
-  // TODO send a Welcome Email
   async sendWelcomeEmail(to: string, username: string) {
     const html = welcomeEmailTemplate(username);
     await this.sendMail({
       to,
-      subject: `Welcome to Alaskari Design!`,
+      subject: `Welcome to Alaskari Tech!`,
       html,
     });
   }
 }
-*/

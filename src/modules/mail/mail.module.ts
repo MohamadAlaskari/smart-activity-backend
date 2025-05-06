@@ -1,7 +1,7 @@
-/*
 import { Module } from '@nestjs/common';
-import { MailerModule } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
+import { MailService } from './mail.service';
+import { MailerModule } from '@nestjs-modules/mailer';
 
 @Module({
   imports: [
@@ -16,10 +16,10 @@ import { ConfigService } from '@nestjs/config';
             user: configService.get<string>('SMTP_USER'),
             pass: configService.get<string>('SMTP_PASS'),
           },
-        } /*,
+        },
         defaults: {
           from: `"${configService.get<string>('SMTP_FROM_NAME')}" <${configService.get<string>('SMTP_USER')}>`,
-        },*/ /*,
+        },
       }),
     }),
   ],
@@ -27,4 +27,3 @@ import { ConfigService } from '@nestjs/config';
   exports: [MailService],
 })
 export class MailModule {}
-*/
