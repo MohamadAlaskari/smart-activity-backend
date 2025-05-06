@@ -9,24 +9,6 @@ import { RegisterDto } from './dto/register.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  /*
-  //@HttpCode(200)
-  @HttpCode(HttpStatus.OK)
-  @Post('login')
-  @ApiOperation({
-    summary: 'User Login',
-    description: 'Authentifiziert den Benutzer und gibt ein JWT-Token zurück.',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'Erfolgreiche Authentifizierung mit Token.',
-  })
-  @ApiResponse({ status: 401, description: 'Ungültige Anmeldeinformationen.' })
-  login(@Body() loginDto: LoginDto) {
-    return '';
-    // return this.authService.login(loginDto);
-  }
-*/
   @Post('register')
   @ApiOperation({
     summary: 'User Registration',
