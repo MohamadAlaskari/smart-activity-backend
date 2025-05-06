@@ -9,6 +9,7 @@ import { DirectionsModule } from './modules/transport/directions.module';
 import { UsersModule } from './modules/users/users.module';
 
 import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -18,8 +19,8 @@ import { DatabaseModule } from './database/database.module';
       isGlobal: true,
     }),
     DatabaseModule,
+    AuthModule,
     UsersModule,
-
     AiModule,
     WeatherModule,
     EventsModule,
