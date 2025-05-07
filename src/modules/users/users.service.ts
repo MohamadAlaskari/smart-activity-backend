@@ -42,4 +42,10 @@ export class UsersService {
     const user = await this.findOne(id);
     await this.userRepo.remove(user);
   }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return await this.userRepo.findOne({
+      where: { email },
+    });
+  }
 }

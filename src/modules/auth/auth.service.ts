@@ -1,12 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
 import { UsersService } from 'src/modules/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { AccessTokentype, JWTPayloadTypes } from 'src/common/utils/types/types';
 
-//import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { MailService } from '../mail/mail.service';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -35,6 +40,41 @@ export class AuthService {
     );
 
     return { accessToken };
+  }
+  async verifyEmailToken(token: string): Promise<{ message: string }> {
+    try {
+      const payload = await this.jwtService.verifyAsync<JWTPayloadTypes>(token);
+
+      await this.usersService.update(payload.id, {
+        isEmailVerified: true,
+      });
+
+      return { message: 'Email verified successfully' };
+    } catch (error) {
+      if (error instanceof Error && error.name === 'TokenExpiredError') {
+        throw new BadRequestException('Verification token expired');
+      }
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
+  async login(loginDto: LoginDto): Promise<AccessTokentype> {
+    const user = await this.usersService.findByEmail(loginDto.email);
+    if (!user) throw new UnauthorizedException('Invalid credentials');
+
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      user.password,
+    );
+    if (!isPasswordValid)
+      throw new UnauthorizedException('Invalid credentials');
+
+    if (!user.isEmailVerified) {
+      throw new UnauthorizedException('Please verify your email first');
+    }
+
+    const token = await this.generateJWT({ id: user.id, email: user.email });
+    return { accessToken: token };
   }
 
   private async generateJWT(payload: JWTPayloadTypes): Promise<string> {

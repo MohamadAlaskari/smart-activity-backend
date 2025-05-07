@@ -1,8 +1,9 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Controller, Post, Body, Get, Query } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { AuthService } from 'src/modules/auth/auth.service';
 
 import { RegisterDto } from './dto/register.dto';
+import { LoginDto } from './dto/login.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -26,6 +27,33 @@ export class AuthController {
   register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }
+  @Get('verify-email')
+  @ApiOperation({ summary: 'Verify email using a token sent by email' })
+  @ApiQuery({
+    name: 'token',
+    required: true,
+    description: 'JWT verification token',
+  })
+  @ApiResponse({ status: 200, description: 'Email verified successfully' })
+  @ApiResponse({ status: 400, description: 'Verification token expired' })
+  @ApiResponse({ status: 401, description: 'Invalid token' })
+  async verifyEmail(@Query('token') token: string) {
+    return this.authService.verifyEmailToken(token);
+  }
+
+  @Post('login')
+  @ApiOperation({ summary: 'Login with email and password' })
+  @ApiResponse({
+    status: 200,
+    description: 'Login successful, returns JWT token',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Invalid credentials or email not verified',
+  })
+  login(@Body() loginDto: LoginDto) {
+    return this.authService.login(loginDto);
+  }
   /*
   @Post('current-user')
   @UseGuards(AuthGuard)
@@ -47,9 +75,4 @@ export class AuthController {
     return this.authService.getCurrentUser(payload.id);
   }
     */
-  /*
-  @Get('verify-email')
-  async verifyEmail(@Query('token') token: string) {
-    // return this.authService.verifyEmail(token);
-  }*/
 }
