@@ -1,9 +1,18 @@
-import { Controller, Post, Body, Get, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { Controller, Post, Body, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { AuthService } from 'src/modules/auth/auth.service';
 
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { JWTPayloadTypes } from 'src/common/utils/types/types';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -54,7 +63,6 @@ export class AuthController {
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
-  /*
   @Post('current-user')
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
@@ -74,5 +82,4 @@ export class AuthController {
   getCurrentUser(@CurrentUser() payload: JWTPayloadTypes) {
     return this.authService.getCurrentUser(payload.id);
   }
-    */
 }

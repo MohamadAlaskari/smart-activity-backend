@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
@@ -70,13 +71,21 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
 
     if (!user.isEmailVerified) {
-      throw new UnauthorizedException('Please verify your email first');
+      throw new UnauthorizedException(
+        'Please verify your email before logging in',
+      );
     }
 
     const token = await this.generateJWT({ id: user.id, email: user.email });
     return { accessToken: token };
   }
-
+  async getCurrentUser(id: string) {
+    const user = await this.usersService.findOne(id);
+    if (!user) {
+      throw new NotFoundException('User not found.');
+    }
+    return user;
+  }
   private async generateJWT(payload: JWTPayloadTypes): Promise<string> {
     return await this.jwtService.signAsync(payload);
   }
