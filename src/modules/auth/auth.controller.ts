@@ -10,9 +10,9 @@ import { AuthService } from 'src/modules/auth/auth.service';
 
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
-import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { JWTPayloadTypes } from 'src/common/utils/types/types';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { CurrentUser } from '../../common/decorators/current-user.decorator';
 
 @ApiTags('Authentication')
 @Controller('auth')

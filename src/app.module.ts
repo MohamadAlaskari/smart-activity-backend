@@ -7,7 +7,6 @@ import { WeatherModule } from './modules/weather/weather.module';
 import { EventsModule } from './modules/events/events.module';
 import { DirectionsModule } from './modules/transport/directions.module';
 import { UsersModule } from './modules/users/users.module';
-
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 
