@@ -1,24 +1,22 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { DirectionsService } from 'src/modules/transport/directions.service';
 import { GetDirectionsDto } from './dto/get-directions.dto';
-import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
 
 @ApiTags('Directions')
 @Controller('directions')
 export class DirectionsController {
   constructor(private readonly directionsService: DirectionsService) {}
 
-  @Get('duration')
+  @Post('duration')
   @ApiOperation({ summary: 'Get duration and distance between two points' })
-  @ApiQuery({ name: 'origin', required: true, example: 'Berlin' })
-  @ApiQuery({ name: 'destination', required: true, example: 'Hamburg' })
-  @ApiQuery({
-    name: 'mode',
-    required: true,
-    enum: ['driving', 'walking', 'bicycling', 'transit'],
+  @ApiBody({
+    description:
+      'Request body containing origin, destination, and transport mode',
+    type: GetDirectionsDto,
   })
   @ApiResponse({ status: 200, description: 'Returns duration and distance' })
-  getDirections(@Query() query: GetDirectionsDto) {
-    return this.directionsService.getDirections(query);
+  getDirections(@Body() body: GetDirectionsDto) {
+    return this.directionsService.getDirections(body);
   }
 }

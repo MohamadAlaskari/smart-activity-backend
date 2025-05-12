@@ -1,28 +1,28 @@
-import { IsIn, IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { TransportMode } from '../enums/transport-mode.enum';
 
 export class GetDirectionsDto {
   @ApiProperty({
-    description: 'Startort (z. B. aktuelle Position)',
+    description: 'Origin location (e.g., current position)',
     example: 'Berlin',
   })
   @IsString()
   origin: string;
 
   @ApiProperty({
-    description: 'Zielort',
-    example: 'Botanischer Garten, Berlin',
+    description: 'Destination location',
+    example: 'Botanical Garden, Berlin',
   })
   @IsString()
   destination: string;
 
   @ApiProperty({
-    description: 'Transportmittel',
-    example: 'walking',
-    enum: ['driving', 'walking', 'bicycling', 'transit'],
-    default: 'driving',
+    description: 'Mode of transportation',
+    example: TransportMode.WALKING,
+    enum: TransportMode,
+    default: TransportMode.DRIVING,
   })
-  @IsString()
-  @IsIn(['driving', 'walking', 'bicycling', 'transit'])
-  mode: 'driving' | 'walking' | 'bicycling' | 'transit';
+  @IsEnum(TransportMode)
+  mode: TransportMode;
 }
