@@ -1,8 +1,9 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable, RequestTimeoutException } from '@nestjs/common';
-import { MailOptions } from 'src/common/utils/types/types';
+import { MailOptions } from './types/mailOptions.type';
 import { welcomeEmailTemplate } from './templates/welcome.template';
 import { verificationEmailTemplate } from './templates/verification.template';
+import { updatePasswordEmailTemplate } from './templates/updatePasswordEmail.template';
 
 @Injectable()
 export class MailService {
@@ -29,19 +30,27 @@ export class MailService {
     const url = `${baseUrl}/auth/verify-email?token=${token}`;
     return this.sendMail({
       to,
-      subject: 'Email Verification',
+      subject: `You're almost in! Confirm your VibeDay email ✨`,
       html: verificationEmailTemplate(url),
     });
   }
 
-  // TODO Send an Email to reset the Password
-  // async sendPasswordResetEmail()
+  async sendPasswordResetEmail(to: string, resetUrl: string) {
+    const subject = 'Reset your VibeDay password';
+    const html = updatePasswordEmailTemplate(resetUrl);
+
+    await this.mailerService.sendMail({
+      to,
+      subject,
+      html,
+    });
+  }
 
   async sendWelcomeEmail(to: string, username: string) {
     const html = welcomeEmailTemplate(username);
     await this.sendMail({
       to,
-      subject: `Welcome to Alaskari Tech!`,
+      subject: `Welcome to VibeDay, ${username}! Let’s get started 🌟`,
       html,
     });
   }

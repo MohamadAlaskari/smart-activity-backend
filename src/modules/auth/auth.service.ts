@@ -28,6 +28,7 @@ export class AuthService {
     //  generate JWT Token
     const accessToken = await this.generateJWT({
       id: createdUser.id,
+      username: createdUser.username,
       email: createdUser.email,
     });
 
@@ -76,9 +77,15 @@ export class AuthService {
       );
     }
 
-    const token = await this.generateJWT({ id: user.id, email: user.email });
+    const token = await this.generateJWT({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    });
+    await this.mailService.sendWelcomeEmail(user.email, user.username);
     return { accessToken: token };
   }
+
   async getCurrentUser(id: string) {
     const user = await this.usersService.findOne(id);
     if (!user) {

@@ -1,8 +1,17 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { DirectionsService } from 'src/modules/transport/directions.service';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { DirectionsService } from 'src/modules/directions/directions.service';
 import { GetDirectionsDto } from './dto/get-directions.dto';
-import { ApiOperation, ApiResponse, ApiTags, ApiBody } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
+@UseGuards(AuthGuard)
+@ApiBearerAuth()
 @ApiTags('Directions')
 @Controller('directions')
 export class DirectionsController {

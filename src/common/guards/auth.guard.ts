@@ -30,7 +30,6 @@ export class AuthGuard implements CanActivate {
           secret: this.configService.get<string>('JWT_SECRET'),
         },
       );
-      console.log('Decoded Token:', payload);
       request[CURRENT_USER_KEY] = payload;
     } catch {
       throw new UnauthorizedException('access denied, invalid token');

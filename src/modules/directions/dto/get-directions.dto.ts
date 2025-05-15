@@ -1,6 +1,6 @@
 import { IsEnum, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { TransportMode } from '../enums/transport-mode.enum';
+import { TransportMode } from '../enums/directions-mode.enum';
 
 export class GetDirectionsDto {
   @ApiProperty({

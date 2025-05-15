@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('users')
@@ -42,7 +43,19 @@ export class User {
   })
   isEmailVerified: boolean;
 
+  @Column({ type: 'date', nullable: true })
+  @ApiProperty({
+    example: '1997-05-15',
+    required: false,
+    description: 'User birth date (optional)',
+  })
+  dateOfBirth?: Date;
+
   @CreateDateColumn({ type: 'timestamp' })
   @ApiProperty({ description: 'Timestamp when the user was created' })
   createdAt: Date;
+
+  @UpdateDateColumn({ type: 'timestamp' })
+  @ApiProperty({ description: 'Timestamp when the user was last updated' })
+  updatedAt: Date;
 }

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
+  IsDateString,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -42,4 +43,13 @@ export class CreateUserDto {
   @IsOptional()
   @IsBoolean()
   isEmailVerified?: boolean;
+
+  @ApiProperty({
+    example: '1997-05-15',
+    required: false,
+    description: 'User birth date (optional)',
+  })
+  @IsOptional()
+  @IsDateString()
+  dateOfBirth?: string;
 }
