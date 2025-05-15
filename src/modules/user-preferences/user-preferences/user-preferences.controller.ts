@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { UserPreferencesService } from 'src/modules/user-preferences/user-preferences.service';
+import { UserPreferencesService } from 'src/modules/user-preferences/user-preferences/user-preferences.service';
 import { CreateUserPreferencesDto } from './dto/create-user-preferences.dto';
 import { UpdateUserPreferencesDto } from './dto/update-user-preferences.dto';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';

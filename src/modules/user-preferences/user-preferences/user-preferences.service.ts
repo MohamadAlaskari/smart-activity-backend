@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { UserPreferences } from './entities/user-preferences.entity';
 import { CreateUserPreferencesDto } from './dto/create-user-preferences.dto';
 import { UpdateUserPreferencesDto } from './dto/update-user-preferences.dto';
-import { User } from '../users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Injectable()
 export class UserPreferencesService {

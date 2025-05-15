@@ -5,7 +5,7 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
+import { User } from '../../../users/entities/user.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { PreferredTime } from '../enums/preferred-time.enum';
 import { TransportMode } from '../enums/transport-mode.enum';

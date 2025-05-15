@@ -13,6 +13,8 @@ import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { MailService } from '../mail/mail.service';
 import { LoginDto } from './dto/login.dto';
+import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -93,6 +95,42 @@ export class AuthService {
     }
     return user;
   }
+
+  async requestPasswordReset({
+    email,
+  }: RequestPasswordResetDto): Promise<{ message: string }> {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) throw new NotFoundException('User not found');
+
+    const token = await this.generateJWT({
+      id: user.id,
+      email: user.email,
+      username: user.username,
+    });
+
+    const baseUrl = 'http://localhost:3000';
+    const resetUrl = `${baseUrl}/auth/reset-password?token=${token}`;
+
+    await this.mailService.sendPasswordResetEmail(user.email, resetUrl);
+
+    return { message: 'Reset link sent to email' };
+  }
+
+  async resetPassword({
+    token,
+    password,
+  }: ResetPasswordDto): Promise<{ message: string }> {
+    try {
+      const payload = await this.jwtService.verifyAsync<JWTPayloadTypes>(token);
+
+      await this.usersService.update(payload.id, { password: password });
+
+      return { message: 'Password updated successfully' };
+    } catch {
+      throw new UnauthorizedException('Invalid or expired token');
+    }
+  }
+
   private async generateJWT(payload: JWTPayloadTypes): Promise<string> {
     return await this.jwtService.signAsync(payload);
   }

@@ -9,7 +9,7 @@ import { DirectionsModule } from './modules/directions/directions.module';
 import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { UserPreferencesModule } from './modules/user-preferences/user-preferences.module';
+import { UserPreferencesModule } from './modules/user-preferences/user-preferences/user-preferences.module';
 
 @Module({
   imports: [

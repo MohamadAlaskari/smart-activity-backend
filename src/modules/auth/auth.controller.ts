@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Query,
+  UseGuards,
+  Req,
+  Res,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -7,12 +16,16 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { AuthService } from 'src/modules/auth/auth.service';
+import { Request, Response } from 'express';
 
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JWTPayloadTypes } from 'src/common/utils/types/types';
 import { AuthGuard } from 'src/common/guards/auth.guard';
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
+import { RequestPasswordResetDto } from './dto/request-password-reset.dto';
+import { resetPasswordSuccessTemplate } from './templates/reset-success.template';
+import { resetPasswordFormTemplate } from './templates/reset-password-form.template';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -81,5 +94,25 @@ export class AuthController {
   })
   getCurrentUser(@CurrentUser() payload: JWTPayloadTypes) {
     return this.authService.getCurrentUser(payload.id);
+  }
+
+  @Post('request-reset')
+  @ApiOperation({ summary: 'Request password reset link via email' })
+  requestReset(@Body() dto: RequestPasswordResetDto) {
+    return this.authService.requestPasswordReset(dto);
+  }
+
+  @Post('reset-password')
+  async resetPasswordFromForm(@Req() req: Request, @Res() res: Response) {
+    const { token, password } = req.body as { token: string; password: string };
+    await this.authService.resetPassword({ token, password });
+
+    res.setHeader('Content-Type', 'text/html');
+    return res.send(resetPasswordSuccessTemplate());
+  }
+
+  @Get('reset-password')
+  resetPasswordForm(@Query('token') token: string): string {
+    return resetPasswordFormTemplate(token);
   }
 }
