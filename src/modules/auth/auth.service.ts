@@ -109,8 +109,8 @@ export class AuthService {
     });
 
     const baseUrl =
-      this.configService.get<string>('FRONTEND_URL') || 'http://localhost:4200';
-    const resetUrl = `${baseUrl}/reset-password?token=${token}`;
+      this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+    const resetUrl = `${baseUrl}/auth/reset-password?token=${token}`;
 
     await this.mailService.sendPasswordResetEmail(user.email, resetUrl);
 
