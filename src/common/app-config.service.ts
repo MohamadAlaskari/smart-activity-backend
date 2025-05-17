@@ -12,6 +12,11 @@ export class AppConfigService {
     if (!key) throw new Error('Missing VISUAL_CROSSING_API_KEY');
     return key;
   }
+  getGoogleMapsApiKey(): string {
+    const key = this.configService.get<string>('GOOGLE_MAPS_API_KEY');
+    if (!key) throw new Error('Missing GOOGLE_MAPS_API_KEY');
+    return key;
+  }
 
   get isProduction(): boolean {
     return this.configService.get('NODE_ENV') === 'production';
