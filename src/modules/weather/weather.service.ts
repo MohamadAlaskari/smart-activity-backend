@@ -2,7 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { DayForecastDto } from './dto/day-forecast.dto';
-import { AppConfigService } from 'src/common/app-config.service';
+import { AppConfigService } from '../../common/app-config.service';
 import { VISUAL_CROSSING_BASE_URL } from 'src/common/utils/constants/weather.constants';
 import {
   DayForecast,
