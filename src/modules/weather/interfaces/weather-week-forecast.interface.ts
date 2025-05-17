@@ -31,3 +31,7 @@ export interface DayForecast {
   description: string;
   icon: string;
 }
+
+export interface VisualCrossingResponse {
+  days: DayForecast[];
+}

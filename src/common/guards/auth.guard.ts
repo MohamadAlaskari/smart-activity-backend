@@ -5,7 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CURRENT_USER_KEY } from '../utils/constants';
+import { CURRENT_USER_KEY } from '../utils/constants/user.constants';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import { JWTPayloadTypes } from 'src/common/utils/types/types';
