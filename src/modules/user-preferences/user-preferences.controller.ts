@@ -1,5 +1,19 @@
-import { Controller, Get, Patch, Post, Body, Query, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Body,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { UserPreferencesService } from './user-preferences.service';
 import { CreateUserPreferencesDto } from './dto/create-user-preferences.dto';
 import { UpdateUserPreferencesDto } from './dto/update-user-preferences.dto';
