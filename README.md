@@ -78,18 +78,18 @@ $ npm run test:cov
 
 ### 📁 .env Datei (Beispiel)
 
-```env
+```
 PORT=3000
 ```
 # DB
-```env
+```
 DB_HOST=
 DB_PORT=
 DB_USERNAME=
 DB_PASSWORD=
 DB_NAME=
 ```
-```env
+```
 # JWT
 JWT_SECRET=yourSuperSecretKey
 JWT_EXPIRES_IN=
@@ -127,7 +127,7 @@ Verifiziert den User anhand des Tokens. Gültig für 30 Minuten.
 ### 🔐 `POST /auth/login`
 Gibt ein gültiges Access Token bei erfolgreichem Login zurück.
 
-```json
+```
 {
   "email": "john@example.com",
   "password": "123456"
@@ -148,7 +148,7 @@ http://localhost:3000/swagger
 
 ## 📁 Projektstruktur (Module-basiert)
 
-```plaintext
+```
 📦src
  ┣ 📂common
  ┃ ┣ 📂decorators
@@ -157,10 +157,14 @@ http://localhost:3000/swagger
  ┃ ┃ ┗ 📜global-exception.filter.ts
  ┃ ┣ 📂guards
  ┃ ┃ ┗ 📜auth.guard.ts
- ┃ ┗ 📂utils
- ┃ ┃ ┣ 📂types
+ ┃ ┣ 📂utils
+ ┃ ┃ ┣ 📂constants
+ ┃ ┃ ┃ ┣ 📜directions.constants.ts
+ ┃ ┃ ┃ ┣ 📜user.constants.ts
+ ┃ ┃ ┃ ┗ 📜weather.constants.ts
+ ┃ ┃ ┗ 📂types
  ┃ ┃ ┃ ┗ 📜types.ts
- ┃ ┃ ┗ 📜constants.ts
+ ┃ ┗ 📜app-config.service.ts
  ┣ 📂config
  ┃ ┗ 📜swagger.config.ts
  ┣ 📂core
@@ -170,6 +174,9 @@ http://localhost:3000/swagger
  ┃ ┃ ┃ ┣ 📜group-suggestion.dto.ts
  ┃ ┃ ┃ ┣ 📜prompt.dto.ts
  ┃ ┃ ┃ ┗ 📜suggestion-response.dto.ts
+ ┃ ┃ ┣ 📂templates
+ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┗ 📜suggestion-context.interface.ts
  ┃ ┃ ┣ 📜ai.controller.ts
  ┃ ┃ ┣ 📜ai.module.ts
  ┃ ┃ ┗ 📜ai.service.ts
@@ -178,14 +185,29 @@ http://localhost:3000/swagger
  ┃ ┃ ┗ 📜db.config.ts
  ┃ ┗ 📜database.module.ts
  ┣ 📂modules
- ┃ ┣ 📂activities
  ┃ ┣ 📂auth
  ┃ ┃ ┣ 📂dto
  ┃ ┃ ┃ ┣ 📜login.dto.ts
- ┃ ┃ ┃ ┗ 📜register.dto.ts
+ ┃ ┃ ┃ ┣ 📜register.dto.ts
+ ┃ ┃ ┃ ┣ 📜request-password-reset.dto.ts
+ ┃ ┃ ┃ ┗ 📜reset-password.dto.ts
+ ┃ ┃ ┣ 📂templates
+ ┃ ┃ ┃ ┣ 📜reset-error.template.ts
+ ┃ ┃ ┃ ┣ 📜reset-password-form.template.ts
+ ┃ ┃ ┃ ┗ 📜reset-success.template.ts
  ┃ ┃ ┣ 📜auth.controller.ts
  ┃ ┃ ┣ 📜auth.module.ts
  ┃ ┃ ┗ 📜auth.service.ts
+ ┃ ┣ 📂directions
+ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┗ 📜get-directions.dto.ts
+ ┃ ┃ ┣ 📂enums
+ ┃ ┃ ┃ ┗ 📜directions-mode.enum.ts
+ ┃ ┃ ┣ 📂interfaces
+ ┃ ┃ ┃ ┗ 📜directions-response.interface.ts
+ ┃ ┃ ┣ 📜directions.controller.ts
+ ┃ ┃ ┣ 📜directions.module.ts
+ ┃ ┃ ┗ 📜directions.service.ts
  ┃ ┣ 📂events
  ┃ ┃ ┣ 📂dto
  ┃ ┃ ┃ ┗ 📜search-events.dto.ts
@@ -194,19 +216,42 @@ http://localhost:3000/swagger
  ┃ ┃ ┗ 📜events.service.ts
  ┃ ┣ 📂mail
  ┃ ┃ ┣ 📂templates
+ ┃ ┃ ┃ ┣ 📜updatePasswordEmail.template.ts
  ┃ ┃ ┃ ┣ 📜verification.template.ts
  ┃ ┃ ┃ ┗ 📜welcome.template.ts
+ ┃ ┃ ┣ 📂types
+ ┃ ┃ ┃ ┗ 📜mailOptions.type.ts
  ┃ ┃ ┣ 📜mail.module.ts
  ┃ ┃ ┗ 📜mail.service.ts
  ┃ ┣ 📂notifications
- ┃ ┣ 📂transport
+ ┃ ┣ 📂suggestion
  ┃ ┃ ┣ 📂dto
- ┃ ┃ ┃ ┗ 📜get-directions.dto.ts
- ┃ ┃ ┣ 📂interfaces
- ┃ ┃ ┃ ┗ 📜directions-response.interface.ts
- ┃ ┃ ┣ 📜directions.controller.ts
- ┃ ┃ ┣ 📜directions.module.ts
- ┃ ┃ ┗ 📜directions.service.ts
+ ┃ ┃ ┣ 📂enums
+ ┃ ┃ ┗ 📂types
+ ┃ ┃ ┃ ┗ 📜suggestion-context.interface.ts
+ ┃ ┣ 📂user-preferences
+ ┃ ┃ ┣ 📂goals
+ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┗ 📂entities
+ ┃ ┃ ┣ 📂times
+ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┗ 📂entities
+ ┃ ┃ ┣ 📂transport-modes
+ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┗ 📂entities
+ ┃ ┃ ┗ 📂user-preferences
+ ┃ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┃ ┣ 📜create-user-preferences.dto.ts
+ ┃ ┃ ┃ ┃ ┗ 📜update-user-preferences.dto.ts
+ ┃ ┃ ┃ ┣ 📂entities
+ ┃ ┃ ┃ ┃ ┗ 📜user-preferences.entity.ts
+ ┃ ┃ ┃ ┣ 📂enums
+ ┃ ┃ ┃ ┃ ┣ 📜preferences-goals.enum.ts
+ ┃ ┃ ┃ ┃ ┣ 📜preferred-time.enum.ts
+ ┃ ┃ ┃ ┃ ┗ 📜transport-mode.enum.ts
+ ┃ ┃ ┃ ┣ 📜user-preferences.controller.ts
+ ┃ ┃ ┃ ┣ 📜user-preferences.module.ts
+ ┃ ┃ ┃ ┗ 📜user-preferences.service.ts
  ┃ ┣ 📂users
  ┃ ┃ ┣ 📂dto
  ┃ ┃ ┃ ┣ 📜create-user.dto.ts
@@ -218,7 +263,10 @@ http://localhost:3000/swagger
  ┃ ┃ ┗ 📜users.service.ts
  ┃ ┗ 📂weather
  ┃ ┃ ┣ 📂dto
- ┃ ┃ ┃ ┗ 📜get-weather.dto.ts
+ ┃ ┃ ┃ ┣ 📜day-forecast.dto.ts
+ ┃ ┃ ┃ ┗ 📜get-week-weather.dto.ts
+ ┃ ┃ ┣ 📂interfaces
+ ┃ ┃ ┃ ┗ 📜weather-week-forecast.interface.ts
  ┃ ┃ ┣ 📜weather.controller.ts
  ┃ ┃ ┣ 📜weather.module.ts
  ┃ ┃ ┗ 📜weather.service.ts

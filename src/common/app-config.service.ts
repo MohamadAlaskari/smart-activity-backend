@@ -18,6 +18,12 @@ export class AppConfigService {
     return key;
   }
 
+  getTicketmasterApiKey(): string {
+    const key = this.configService.get<string>('TICKETMASTER_API_KEY');
+    if (!key) throw new Error('Missing TICKETMASTER_API_KEY');
+    return key;
+  }
+
   get isProduction(): boolean {
     return this.configService.get('NODE_ENV') === 'production';
   }

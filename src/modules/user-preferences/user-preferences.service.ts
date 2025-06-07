@@ -4,13 +4,13 @@ import { Repository } from 'typeorm';
 import { UserPreferences } from './entities/user-preferences.entity';
 import { CreateUserPreferencesDto } from './dto/create-user-preferences.dto';
 import { UpdateUserPreferencesDto } from './dto/update-user-preferences.dto';
-import { User } from '../../users/entities/user.entity';
+import { User } from 'src/modules/users/entities/user.entity';
 
 @Injectable()
 export class UserPreferencesService {
   constructor(
     @InjectRepository(UserPreferences)
-    private readonly preferencesRepo: Repository<UserPreferences>,
+    private readonly repo: Repository<UserPreferences>,
 
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
@@ -20,30 +20,25 @@ export class UserPreferencesService {
     const user = await this.userRepo.findOne({ where: { id: userId } });
     if (!user) throw new NotFoundException('User not found');
 
-    const preferences = this.preferencesRepo.create({
-      ...dto,
-      user,
+    const existing = await this.repo.findOne({
+      where: { user: { id: userId } },
     });
-    return this.preferencesRepo.save(preferences);
+    if (existing) throw new Error('Preferences already exist for this user');
+
+    const newPrefs = this.repo.create({ ...dto, user });
+    return this.repo.save(newPrefs);
   }
 
-  async findByUser(userId: string) {
-    const prefs = await this.preferencesRepo.findOne({
-      where: { user: { id: userId } },
-      relations: ['user'],
-    });
+  async getByUserId(userId: string) {
+    const prefs = await this.repo.findOne({ where: { user: { id: userId } } });
     if (!prefs) throw new NotFoundException('Preferences not found');
     return prefs;
   }
 
   async update(userId: string, dto: UpdateUserPreferencesDto) {
-    const prefs = await this.findByUser(userId);
+    const prefs = await this.repo.findOne({ where: { user: { id: userId } } });
+    if (!prefs) throw new NotFoundException('Preferences not found');
     Object.assign(prefs, dto);
-    return this.preferencesRepo.save(prefs);
-  }
-  async delete(userId: string): Promise<{ message: string }> {
-    const prefs = await this.findByUser(userId);
-    await this.preferencesRepo.remove(prefs);
-    return { message: 'User preferences deleted successfully' };
+    return this.repo.save(prefs);
   }
 }
