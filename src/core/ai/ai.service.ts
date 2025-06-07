@@ -1,4 +1,3 @@
-// ai.service.ts
 import {
   BadRequestException,
   Injectable,
@@ -7,56 +6,107 @@ import {
   ServiceUnavailableException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { AppConfigService } from 'src/common/app-config.service';
 import OpenAI from 'openai';
+import { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
+import { SuggestionResultDto } from './dto/suggestion-result.dto';
 
 @Injectable()
 export class AiService {
   private readonly openai: OpenAI;
   private readonly logger = new Logger(AiService.name);
 
-  constructor(private configService: ConfigService) {
+  constructor(private readonly appConfigService: AppConfigService) {
     this.openai = new OpenAI({
-      apiKey: this.configService.get<string>('OPENAI_API_KEY'),
+      apiKey: this.appConfigService.openAiApiKey,
     });
   }
 
   async generateResponse(prompt: string): Promise<string> {
     try {
       const response = await this.openai.chat.completions.create({
-        model: 'gpt-3.5-turbo',
+        model: this.appConfigService.openAiModel,
         messages: [{ role: 'user', content: prompt }],
       });
 
       const messageContent = response.choices[0]?.message?.content;
       if (!messageContent) {
-        throw new InternalServerErrorException('Ungültige Antwort von OpenAI');
+        throw new InternalServerErrorException('No content from OpenAI');
       }
+
       return messageContent.trim();
     } catch (error) {
-      const openaiMessage =
-        (error as { error?: { message?: string } })?.error?.message ||
-        (error as { message?: string })?.message;
+      this.handleOpenAiError(error);
+    }
+  }
 
-      this.logger.error('OpenAI Error:', error);
+  async generateStructuredSuggestions(
+    prompt: string,
+    context: any,
+  ): Promise<SuggestionResultDto[]> {
+    try {
+      const messages: ChatCompletionMessageParam[] = [
+        {
+          role: 'system',
+          content:
+            'You are a helpful assistant that suggests activities as JSON array. The format must be as follows:\n' +
+            `[{
+        "suggestion": "Relaxing walk in the park",
+        "category": "Outdoors",
+        "estimatedDuration": "60 minutes",
+        "location": "Tiergarten, Berlin",
+        "clothingAdvice": "Wear comfortable shoes and bring a light jacket"
+      }]`,
+        },
+        { role: 'user', content: prompt },
+        { role: 'user', content: `Context: ${JSON.stringify(context)}` },
+      ];
 
-      // Spezifischere Fehlerbehandlung:
-      switch ((error as { status?: number })?.status) {
-        case 401:
-          throw new UnauthorizedException('Invalid OpenAI API key.');
-        case 429:
-          throw new ServiceUnavailableException(
-            'Rate limit exceeded. Try again later.',
-          );
-        case 400:
-          throw new BadRequestException(
-            openaiMessage || 'Bad request to OpenAI.',
-          );
-        default:
-          throw new InternalServerErrorException(
-            openaiMessage || 'OpenAI request failed.',
-          );
-      }
+      const response = await this.openai.chat.completions.create({
+        model: this.appConfigService.openAiModel,
+        messages,
+      });
+
+      const messageContent = response.choices[0]?.message?.content;
+      if (!messageContent)
+        throw new InternalServerErrorException('Empty OpenAI response');
+
+      return this.parseJsonArray(messageContent);
+    } catch (error) {
+      this.handleOpenAiError(error);
+    }
+  }
+
+  private parseJsonArray(content: string): SuggestionResultDto[] {
+    try {
+      const parsed = JSON.parse(content) as SuggestionResultDto[];
+      if (!Array.isArray(parsed)) throw new Error('Expected JSON array');
+      return parsed;
+    } catch {
+      throw new InternalServerErrorException(
+        'Failed to parse JSON from OpenAI',
+      );
+    }
+  }
+
+  handleOpenAiError(error: unknown): never {
+    const err = error as {
+      status?: number;
+      message?: string;
+      error?: { message?: string };
+    };
+    const msg = err?.error?.message || err?.message || 'OpenAI Error';
+    this.logger.error('OpenAI Error:', err);
+
+    switch (err?.status) {
+      case 401:
+        throw new UnauthorizedException('Invalid OpenAI API key.');
+      case 429:
+        throw new ServiceUnavailableException('Rate limit exceeded');
+      case 400:
+        throw new BadRequestException(msg);
+      default:
+        throw new InternalServerErrorException(msg);
     }
   }
 }

@@ -2,6 +2,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { WEATHER_CONFIG_KEYS } from './utils/constants/weather.constants';
+import { AI_CONFIG_KEYS, OPENAI_MODEL } from './utils/constants/ai.constant';
+import { DIRECTIONS_CONFIG_KEYS } from './utils/constants/directions.constants';
+import { EVENTS_CONFIG_KEYS } from './utils/constants/events.constants';
 
 @Injectable()
 export class AppConfigService {
@@ -13,17 +16,26 @@ export class AppConfigService {
     return key;
   }
   getGoogleMapsApiKey(): string {
-    const key = this.configService.get<string>('GOOGLE_MAPS_API_KEY');
+    const key = this.configService.get<string>(DIRECTIONS_CONFIG_KEYS.API_KEY);
     if (!key) throw new Error('Missing GOOGLE_MAPS_API_KEY');
     return key;
   }
 
   getTicketmasterApiKey(): string {
-    const key = this.configService.get<string>('TICKETMASTER_API_KEY');
+    const key = this.configService.get<string>(EVENTS_CONFIG_KEYS.API_KEY);
     if (!key) throw new Error('Missing TICKETMASTER_API_KEY');
     return key;
   }
-
+  get openAiApiKey(): string {
+    const key = this.configService.get<string>(AI_CONFIG_KEYS.API_KEY);
+    if (!key) throw new Error('Missing OPENAI_API_KEY');
+    return key;
+  }
+  get openAiModel(): string {
+    const model = OPENAI_MODEL.OPENAI_MODEL;
+    if (!model) throw new Error('Missing OPENAI_MODEL');
+    return model;
+  }
   get isProduction(): boolean {
     return this.configService.get('NODE_ENV') === 'production';
   }

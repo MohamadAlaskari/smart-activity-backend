@@ -65,8 +65,4 @@ export class CreateUserPreferencesDto {
   @ApiProperty({ example: '2025-06-07' })
   @IsString()
   date: string;
-
-  @ApiProperty({ example: 'd5d92ec2-78c5-4e97-b660-f3c6f6b144b9' })
-  @IsString()
-  userId: string;
 }

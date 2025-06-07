@@ -10,7 +10,7 @@ export class DirectionsService {
   private readonly apiKey: string;
 
   constructor(private readonly config: AppConfigService) {
-    this.apiKey = this.config.getGoogleMapsApiKey(); // new helper
+    this.apiKey = this.config.getGoogleMapsApiKey();
   }
 
   async getDirections(query: GetDirectionsDto) {

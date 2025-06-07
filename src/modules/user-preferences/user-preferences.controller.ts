@@ -1,14 +1,17 @@
-import { Controller, Get, Patch, Post, Body, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { Controller, Get, Patch, Post, Body, Query, UseGuards } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from '@nestjs/swagger';
 import { UserPreferencesService } from './user-preferences.service';
 import { CreateUserPreferencesDto } from './dto/create-user-preferences.dto';
 import { UpdateUserPreferencesDto } from './dto/update-user-preferences.dto';
+import { AuthGuard } from 'src/common/guards/auth.guard';
 
 @ApiTags('User Preferences')
 @Controller('user-preferences')
 export class UserPreferencesController {
   constructor(private readonly preferencesService: UserPreferencesService) {}
 
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Post()
   @ApiOperation({ summary: 'Create user preferences' })
   @ApiQuery({ name: 'userId', required: true, description: 'UUID of the user' })
