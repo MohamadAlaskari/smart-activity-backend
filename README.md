@@ -103,6 +103,22 @@ MAIL_PASS=dein-smtp-passwort
 MAIL_FROM=
 BASE_URL=https://smart-activity-backend.alaskaritech.com
 ```
+```
+# Ticketmaster
+TICKETMASTER_API_KEY=
+```
+```
+# Google Maps
+GOOGLE_MAPS_API_KEY=
+```
+```
+# Visual Crossing
+VISUAL_CROSSING_API_KEY=
+```
+```
+# OpenAI
+OPENAI_API_KEY=
+```
 
 ---
 
