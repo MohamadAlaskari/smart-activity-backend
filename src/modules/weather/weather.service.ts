@@ -17,7 +17,7 @@ export class WeatherService {
   }
 
   async getWeekForecastByLocation(location: string): Promise<any> {
-    const url = this.buildForecastUrl(location);
+    const url = this.buildForecastUrl(location, 'today/next7days');
 
     try {
       const response = await firstValueFrom(
@@ -58,7 +58,7 @@ export class WeatherService {
     longitude: number,
   ): Promise<any[]> {
     const location = `${latitude},${longitude}`;
-    const url = this.buildForecastUrl(location, 'today', 'hours');
+    const url = this.buildForecastUrl(location, 'today/next7days', 'hours');
 
     try {
       const response = await firstValueFrom(
