@@ -1,7 +1,6 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { WeatherService } from './weather.service';
 import { GetWeekWeatherDto } from './dto/get-week-weather.dto';
-import { DayForecastDto } from './dto/day-forecast.dto';
 import {
   ApiTags,
   ApiOperation,
@@ -9,6 +8,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { GetWeekWeatherByCoordsDto } from './dto/GetWeekWeatherByCoordsDto';
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
@@ -22,11 +22,40 @@ export class WeatherController {
   @ApiResponse({
     status: 200,
     description: 'Returns the 7-day weather forecast',
-    type: [DayForecastDto],
   })
-  async getWeekForecast(
-    @Query() query: GetWeekWeatherDto,
-  ): Promise<DayForecastDto[]> {
-    return this.weatherService.getWeekForecast(query.location);
+  async getWeekForecast(@Query() query: GetWeekWeatherDto): Promise<any> {
+    return this.weatherService.getWeekForecastByLocation(query.location);
+  }
+
+  @Get('week/coordinates')
+  @ApiOperation({ summary: 'Get 7-day weather forecast by coordinates' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the 7-day forecast for given coordinates',
+  })
+  async getWeekForecastByCoordinates(
+    @Query() query: GetWeekWeatherByCoordsDto,
+  ): Promise<any> {
+    return this.weatherService.getWeekForecastByCoordinates(
+      query.latitude,
+      query.longitude,
+    );
+  }
+
+  @Get('week/hours/coordinates')
+  @ApiOperation({
+    summary: 'Get hourly forecast for the next 7 days by coordinates',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns all hourly forecasts over the next 7 days',
+  })
+  async getHourlyForecastByCoordinates(
+    @Query() query: GetWeekWeatherByCoordsDto,
+  ): Promise<any[]> {
+    return this.weatherService.getDaysHourlyForecastByCoordinates(
+      query.latitude,
+      query.longitude,
+    );
   }
 }
