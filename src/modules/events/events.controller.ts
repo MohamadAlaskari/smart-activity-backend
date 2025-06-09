@@ -1,8 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { EventsService } from './events.service';
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
-import { GetEventsDto } from './dto/get-events.dto';
-import { EventResult } from './interfaces/ticketmaster-response.interface';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { GetEventsFlatDto } from './dto/get-events-flat.dto';
 
 @ApiTags('Events')
 @Controller('events')
@@ -11,26 +10,32 @@ export class EventsController {
 
   @Get()
   @ApiOperation({
-    summary: 'Get events filtered by city, date, status, category or time',
+    summary: 'Lade Events nach Standort, Datum und optionalem Radius/Limit',
+    description:
+      'Lädt Events über die Ticketmaster API anhand von Koordinaten (lat/lon), Startdatum, optionalem Radius (in km) und Anzahl der Events (max. 200).',
   })
   @ApiResponse({
     status: 200,
-    description: 'Filtered list of events returned',
+    description: 'Events wurden erfolgreich geladen.',
   })
-  @ApiQuery({ name: 'location', required: false, example: 'Berlin' })
-  @ApiQuery({ name: 'rangeStart', required: false, example: '2025-05-20' })
-  @ApiQuery({ name: 'rangeEnd', required: false, example: '2025-05-30' })
-  @ApiQuery({ name: 'status', required: false, example: 'onsale' })
-  @ApiQuery({ name: 'category', required: false, example: 'Music' })
-  @ApiQuery({
-    name: 'time',
-    required: false,
-    example: 'evening',
-    enum: ['morning', 'afternoon', 'evening'],
+  @ApiResponse({
+    status: 400,
+    description: 'Ungültige Anfrageparameter (Validation Error).',
   })
-  async getFilteredEvents(
-    @Query() query: GetEventsDto,
-  ): Promise<EventResult[]> {
-    return this.eventsService.getFilteredEvents(query);
+  @ApiResponse({
+    status: 500,
+    description: 'Serverfehler beim Abrufen der Events.',
+  })
+  getAllEvents(@Query() query: GetEventsFlatDto) {
+    const radius = query.radius ?? 100;
+    const size = query.size ?? 50;
+
+    return this.eventsService.getEventsByLocationAndDate(
+      query.lat,
+      query.lon,
+      query.startDate,
+      radius,
+      size,
+    );
   }
 }

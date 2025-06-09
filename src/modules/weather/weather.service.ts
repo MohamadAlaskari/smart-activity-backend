@@ -58,7 +58,7 @@ export class WeatherService {
     longitude: number,
   ): Promise<any[]> {
     const location = `${latitude},${longitude}`;
-    const url = this.buildForecastUrl(location, 'today/next7days', 'hours');
+    const url = this.buildForecastUrl(location, 'today/next0days', 'hours');
 
     try {
       const response = await firstValueFrom(
@@ -70,6 +70,48 @@ export class WeatherService {
       }));
     } catch {
       throw new InternalServerErrorException('Could not fetch hourly forecast');
+    }
+  }
+  async getDayHourlyForecastByCoordinates(
+    latitude: number,
+    longitude: number,
+    dayNumber: number,
+  ): Promise<any> {
+    const location = `${latitude},${longitude}`;
+    const url = this.buildForecastUrl(
+      location,
+      `today/next${dayNumber}days`,
+      'hours',
+    );
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get<VisualCrossingResponse>(url),
+      );
+
+      return response.data.days[dayNumber];
+    } catch {
+      throw new InternalServerErrorException('Could not fetch hourly forecast');
+    }
+  }
+
+  async getForecastByDate(
+    latitude: number,
+    longitude: number,
+    date: string,
+  ): Promise<any> {
+    const location = `${latitude},${longitude}`;
+    const url = this.buildForecastUrl(location, date, 'hours');
+
+    try {
+      const response = await firstValueFrom(
+        this.httpService.get<VisualCrossingResponse>(url),
+      );
+      return response.data.days;
+    } catch {
+      throw new InternalServerErrorException(
+        'Could not fetch forecast for date',
+      );
     }
   }
 

@@ -9,6 +9,8 @@ import {
 } from '@nestjs/swagger';
 //import { AuthGuard } from 'src/common/guards/auth.guard';
 import { GetWeekWeatherByCoordsDto } from './dto/GetWeekWeatherByCoordsDto';
+import { GetDayWeatherByCoordsDto } from './dto/GetDayWeatherByCoordsDto';
+import { GetForecastByDateDto } from './dto/getForecastByDate';
 
 //@UseGuards(AuthGuard)
 //@ApiBearerAuth()
@@ -56,6 +58,32 @@ export class WeatherController {
     return this.weatherService.getDaysHourlyForecastByCoordinates(
       query.latitude,
       query.longitude,
+    );
+  }
+
+  @Get('day/coordinates')
+  @ApiOperation({ summary: 'Get daily weather forecast by coordinates' })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the daily weather forecast for a specific day',
+  })
+  async getDayHourlyForecastByCoordinates(
+    @Query() query: GetDayWeatherByCoordsDto,
+  ): Promise<any> {
+    return this.weatherService.getDayHourlyForecastByCoordinates(
+      query.latitude,
+      query.longitude,
+      query.dayNumber,
+    );
+  }
+
+  @Get('forecast/date')
+  @ApiOperation({ summary: 'Get weather forecast for a specific date' })
+  getForecastByDate(@Query() query: GetForecastByDateDto) {
+    return this.weatherService.getForecastByDate(
+      query.latitude,
+      query.longitude,
+      query.date,
     );
   }
 }
