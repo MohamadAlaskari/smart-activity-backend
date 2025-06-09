@@ -10,6 +10,7 @@ import { UsersModule } from './modules/users/users.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserPreferencesModule } from './modules/user-preferences/user-preferences.module';
+import { SuggestionsModule } from './modules/suggestion/suggestions.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UserPreferencesModule } from './modules/user-preferences/user-preferenc
     WeatherModule,
     EventsModule,
     DirectionsModule,
+    SuggestionsModule,
   ],
   controllers: [AppController],
   providers: [],

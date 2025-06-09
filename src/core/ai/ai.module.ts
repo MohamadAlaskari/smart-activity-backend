@@ -8,5 +8,6 @@ import { AppConfigService } from 'src/common/app-config.service';
   imports: [HttpModule],
   controllers: [AiController],
   providers: [AiService, AppConfigService],
+  exports: [AiService],
 })
 export class AiModule {}
