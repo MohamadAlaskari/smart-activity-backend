@@ -1,17 +1,18 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { DirectionsService } from './directions.service';
 import { GetDirectionsDto } from './dto/get-directions.dto';
 import {
   ApiOperation,
   ApiResponse,
   ApiTags,
-  ApiBearerAuth,
+  //ApiBearerAuth,
   ApiQuery,
 } from '@nestjs/swagger';
-import { AuthGuard } from '../../common/guards/auth.guard';
+import { GetCityByCoordsDto } from './dto/get-city-by-coords.dto';
+//import { AuthGuard } from '../../common/guards/auth.guard';
 
-@UseGuards(AuthGuard)
-@ApiBearerAuth()
+//@UseGuards(AuthGuard)
+//@ApiBearerAuth()
 @ApiTags('Directions')
 @Controller('directions')
 export class DirectionsController {
@@ -33,5 +34,19 @@ export class DirectionsController {
   })
   getDirections(@Query() query: GetDirectionsDto) {
     return this.directionsService.getDirections(query);
+  }
+
+  @Get('resolve-city')
+  @ApiOperation({ summary: 'Resolve city name from latitude and longitude' })
+  @ApiQuery({ name: 'latitude', example: 52.52, required: true })
+  @ApiQuery({ name: 'longitude', example: 13.405, required: true })
+  @ApiResponse({ status: 200, description: 'Returns city name as string' })
+  async getCityByCoordinates(
+    @Query() query: GetCityByCoordsDto,
+  ): Promise<string> {
+    return this.directionsService.getCityFromCoordinates(
+      query.latitude,
+      query.longitude,
+    );
   }
 }

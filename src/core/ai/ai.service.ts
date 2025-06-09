@@ -48,15 +48,29 @@ export class AiService {
       const messages: ChatCompletionMessageParam[] = [
         {
           role: 'system',
-          content:
-            'You are a helpful assistant that suggests activities as JSON array. The format must be as follows:\n' +
-            `[{
-        "suggestion": "Relaxing walk in the park",
-        "category": "Outdoors",
-        "estimatedDuration": "60 minutes",
-        "location": "Tiergarten, Berlin",
-        "clothingAdvice": "Wear comfortable shoes and bring a light jacket"
-      }]`,
+          content: `You are an assistant that generates suggestions as a valid JSON array of objects with the following structure:
+
+[
+  {
+    "title": "Open-Air Yoga im Park",
+    "description": "Entspannende Yoga-Session unter freiem Himmel. Matte mitbringen.",
+    "category": "Health & Wellness",
+    "location": {
+      "name": "Volkspark Friedrichshain",
+      "address": "Friedrichshain, Berlin",
+      "lat": 52.528300,
+      "lon": 13.431000
+    },
+    "distanceKm": 2.3,
+    "startTime": "2025-06-03T09:30:00",
+    "endTime": "2025-06-03T11:00:00",
+    "price": "Free",
+    "isTicketed": false,
+    "vibeMatch": ["Outdoors", "Chill"]
+  }
+]
+
+Respond with only the JSON array. Do not include explanations or formatting.`,
         },
         { role: 'user', content: prompt },
         { role: 'user', content: `Context: ${JSON.stringify(context)}` },

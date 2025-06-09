@@ -3,7 +3,11 @@ import axios from 'axios';
 import { GetDirectionsDto } from './dto/get-directions.dto';
 import { GoogleDirectionsResponse } from './interfaces/directions-response.interface';
 import { AppConfigService } from '../../common/app-config.service';
-import { GOOGLE_DIRECTIONS_BASE_URL } from '../../common/utils/constants/directions.constants';
+import {
+  GOOGLE_DIRECTIONS_BASE_URL,
+  MAPBOX_GEOCODING_BASE_URL,
+} from '../../common/utils/constants/directions.constants';
+import { MapboxGeocodeResponse } from './interfaces/mapbox-geocode-response.interface';
 
 @Injectable()
 export class DirectionsService {
@@ -30,6 +34,23 @@ export class DirectionsService {
       };
     } catch {
       throw new InternalServerErrorException('Failed to fetch directions');
+    }
+  }
+  async getCityFromCoordinates(lat: number, lon: number): Promise<string> {
+    const token = this.config.getMapboxApiKey();
+    const url = `${MAPBOX_GEOCODING_BASE_URL}/${lon},${lat}.json?access_token=${token}`;
+
+    try {
+      const response = await axios.get<MapboxGeocodeResponse>(url);
+      const features = response.data.features;
+
+      const city = features.find((f) => f.place_type.includes('place'));
+
+      return city?.text || 'Unknown City';
+    } catch {
+      throw new InternalServerErrorException(
+        'Failed to resolve city name from Mapbox',
+      );
     }
   }
 

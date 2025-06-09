@@ -3,7 +3,10 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { WEATHER_CONFIG_KEYS } from './utils/constants/weather.constants';
 import { AI_CONFIG_KEYS, OPENAI_MODEL } from './utils/constants/ai.constant';
-import { DIRECTIONS_CONFIG_KEYS } from './utils/constants/directions.constants';
+import {
+  DIRECTIONS_CONFIG_KEYS,
+  MAPBOX_CONFIG_KEYS,
+} from './utils/constants/directions.constants';
 import { EVENTS_CONFIG_KEYS } from './utils/constants/events.constants';
 
 @Injectable()
@@ -18,6 +21,12 @@ export class AppConfigService {
   getGoogleMapsApiKey(): string {
     const key = this.configService.get<string>(DIRECTIONS_CONFIG_KEYS.API_KEY);
     if (!key) throw new Error('Missing GOOGLE_MAPS_API_KEY');
+    return key;
+  }
+
+  getMapboxApiKey(): string {
+    const key = this.configService.get<string>(MAPBOX_CONFIG_KEYS.API_KEY);
+    if (!key) throw new Error('Missing MAPBOX_ACCESS_TOKEN');
     return key;
   }
 
