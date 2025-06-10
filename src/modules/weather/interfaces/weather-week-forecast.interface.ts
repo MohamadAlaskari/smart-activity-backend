@@ -1,7 +1,7 @@
 export interface DayForecast {
-  [key: string]: number | string | string[] | undefined;
+    [key: string]: number | string | string[] | undefined;
 }
 
 export interface VisualCrossingResponse {
-  days: DayForecast[];
+    days: DayForecast[];
 }

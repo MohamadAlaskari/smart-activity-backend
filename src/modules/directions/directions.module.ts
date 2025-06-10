@@ -4,7 +4,8 @@ import { DirectionsController } from './directions.controller';
 import { AppConfigService } from 'src/common/app-config.service';
 
 @Module({
-  controllers: [DirectionsController],
-  providers: [DirectionsService, AppConfigService],
+    controllers: [DirectionsController],
+    providers: [DirectionsService, AppConfigService],
+    exports: [DirectionsService],
 })
 export class DirectionsModule {}

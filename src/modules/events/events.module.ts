@@ -4,8 +4,8 @@ import { EventsService } from './events.service';
 import { AppConfigService } from 'src/common/app-config.service';
 
 @Module({
-  controllers: [EventsController],
-  providers: [EventsService, AppConfigService],
-  exports: [EventsService],
+    controllers: [EventsController],
+    providers: [EventsService, AppConfigService],
+    exports: [EventsService],
 })
 export class EventsModule {}

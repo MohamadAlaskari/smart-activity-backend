@@ -1,24 +1,24 @@
 import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
+    Column,
+    CreateDateColumn,
+    Entity,
+    PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity('suggestions')
 export class Suggestion {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @Column('uuid')
-  userId: string;
+    @Column('uuid')
+    userId: string;
 
-  @Column({ type: 'json' }) // oder 'simple-json'
-  content: any;
+    @Column({ type: 'json' }) // oder 'simple-json'
+    content: any;
 
-  @Column({ default: false })
-  selected: boolean;
+    @Column({ default: false })
+    selected: boolean;
 
-  @CreateDateColumn()
-  createdAt: Date;
+    @CreateDateColumn()
+    createdAt: Date;
 }

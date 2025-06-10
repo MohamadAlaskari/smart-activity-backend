@@ -1,38 +1,31 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsObject } from 'class-validator';
+import {
+    IsDateString,
+    IsLatitude,
+    IsLongitude,
+    IsString,
+} from 'class-validator';
 
 export class CreateSuggestionDto {
-  @ApiProperty({
-    description: 'Context data used by AI to generate suggestions',
-    example: {
-      location: 'Bremen',
-      coordinates: {
-        lat: 53.079296,
-        lon: 8.801694,
-      },
-      date: '2025-06-09',
-      weather: {
-        temp: 17.2,
-        conditions: 'Partly Cloudy',
-        icon: 'partly-cloudy-day',
-      },
-      preferences: {
-        selectedVibes: ['Relaxed', 'Social'],
-        budget: 20,
-        distanceRadius: 5,
-        selectedTimeWindows: ['Afternoon'],
-        selectedGroupSizes: ['Solo'],
-      },
-      events: [
-        {
-          id: 'Z698xZC2Z1k-xuN7Y',
-          title: 'Konzert in Bremen',
-          date: '2025-06-10',
-          venue: 'Theater Bremen',
-        },
-      ],
-    },
-  })
-  @IsObject()
-  context: Record<string, any>;
+    @ApiProperty({
+        example: 'f2fb62f9-399f-4582-8efb-ac1c6ac9c21c',
+        description: 'User ID',
+    })
+    @IsString()
+    userId: string;
+
+    @ApiProperty({ example: 53.0793, description: 'Latitude' })
+    @IsLatitude()
+    lat: number;
+
+    @ApiProperty({ example: 8.8017, description: 'Longitude' })
+    @IsLongitude()
+    lon: number;
+
+    @ApiProperty({
+        example: '2025-06-10',
+        description: 'Date for activity suggestions',
+    })
+    @IsDateString()
+    date: string;
 }
