@@ -19,9 +19,6 @@ export class UserPreferences {
   @Column({ type: 'json' })
   selectedVibes: string[];
 
-  @Column()
-  rememberVibe: boolean;
-
   @Column({ type: 'json' })
   selectedLifeVibes: string[];
 
@@ -31,27 +28,12 @@ export class UserPreferences {
   @Column('float')
   budget: number;
 
-  @Column()
-  rememberBudget: boolean;
-
   @Column('float')
   distanceRadius: number;
-
-  @Column()
-  rememberDistance: boolean;
 
   @Column({ type: 'json' })
   selectedTimeWindows: string[];
 
-  @Column()
-  rememberTimeWindow: boolean;
-
   @Column({ type: 'json' })
   selectedGroupSizes: string[];
-
-  @Column()
-  location: string;
-
-  @Column()
-  date: string;
 }
