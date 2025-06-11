@@ -1,16 +1,16 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { SuggestionsService } from './suggestions.service';
 import {
-    ApiBearerAuth,
+    //  ApiBearerAuth,
     ApiOperation,
     ApiResponse,
     ApiTags,
 } from '@nestjs/swagger';
 import { CreateSuggestionDto } from './dto/create-suggestion.dto';
-import { AuthGuard } from 'src/common/guards/auth.guard';
+//import { AuthGuard } from 'src/common/guards/auth.guard';
 
-@UseGuards(AuthGuard)
-@ApiBearerAuth()
+//@UseGuards(AuthGuard)
+//@ApiBearerAuth()
 @ApiTags('Suggestions')
 @Controller('suggestions')
 export class SuggestionsController {

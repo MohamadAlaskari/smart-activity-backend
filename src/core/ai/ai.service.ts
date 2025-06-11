@@ -50,35 +50,45 @@ export class AiService {
             const messages: ChatCompletionMessageParam[] = [
                 {
                     role: 'system',
-                    content: `You are an assistant that generates suggestions as a valid JSON array of objects with the following structure :
-
-[
-  {
-    "title": "Open-Air Yoga im Park",
-    "description": "Entspannende Yoga-Session unter freiem Himmel. Matte mitbringen.",
-    "category": "Health & Wellness",
-    "location": {
-      "name": "Volkspark Friedrichshain",
-      "address": "Friedrichshain, Berlin",
-      "lat": 52.528300,
-      "lon": 13.431000
-    },
-    "distanceKm": 2.3,
-    "startTime": "2025-06-03T09:30:00",
-    "endTime": "2025-06-03T11:00:00",
-    "price": "Free",
-    "isTicketed": false,
-    "vibeMatch": ["Outdoors", "Chill"],
-    "images": ["http://example.com/image.jpg", "http://example.com/image2.jpg"]
-  }
-]
-
-Respond with only the JSON array. Do not include explanations or formatting.`,
+                    content: `You generate personalized activity suggestions in structured JSON format. Suggestions are based on user preferences, weather, and nearby events.`,
                 },
-                { role: 'user', content: prompt },
                 {
                     role: 'user',
-                    content: `Context: ${JSON.stringify(context)}`,
+                    content: prompt,
+                },
+                {
+                    role: 'user',
+                    content: `Here is the context:\n${JSON.stringify(context)}`,
+                },
+                {
+                    role: 'user',
+                    content: `If the suggestion is based on a real event from the context, include its "url" property for ticket booking.`,
+                },
+                {
+                    role: 'user',
+                    content: `Structure example and formatting rules:
+[
+  {
+    "title": "string",
+    "description": "string",
+    "category": "string",
+    "location": {
+      "name": "string",
+      "address": "string",
+      "lat": number,
+      "lon": number
+    },
+    "distanceKm": number,
+    "startTime": "YYYY-MM-DDTHH:mm:ss",
+    "endTime": "YYYY-MM-DDTHH:mm:ss",
+    "price": "string",
+    "isTicketed": boolean,
+    "vibeMatch": [ "string" ],
+    "images": [ "string" ],
+    "url": "string"  // leave empty string "" if not based on a real event
+  }
+]
+Respond with only the array. No explanation.`,
                 },
             ];
 
@@ -88,7 +98,6 @@ Respond with only the JSON array. Do not include explanations or formatting.`,
             });
 
             const messageContent = response.choices[0]?.message?.content;
-            console.log('OpenAI response:', messageContent);
             if (!messageContent)
                 throw new InternalServerErrorException('Empty OpenAI response');
 

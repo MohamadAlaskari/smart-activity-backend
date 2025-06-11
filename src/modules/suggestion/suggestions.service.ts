@@ -40,7 +40,19 @@ export class SuggestionsService {
             coordinates,
             date,
         );
-        const prompt: string = `Generate 7 structured suggestions for user ${userId} in ${context.city} on ${context.date} based on this:}`;
+        console.log('🧠 Final AI Context:', JSON.stringify(context, null, 2));
+
+        const prompt: string = `Generate 7 personalized suggestions for a user in ${context.city} on ${context.date}.
+Preferences:
+- Vibes: ${context.preferences.selectedVibes.join(', ')}
+- LifeVibes: ${context.preferences.selectedLifeVibes.join(', ')}
+- Experience types: ${context.preferences.selectedExperienceTypes.join(', ')}
+- Time windows: ${context.preferences.selectedTimeWindows.join(', ')}
+- Group sizes: ${context.preferences.selectedGroupSizes.join(', ')}
+- Budget: ${context.preferences.budget} €
+- Max distance: ${context.preferences.distanceRadius} km
+
+Generate activities that match as many preferences as possible.`;
 
         const suggestions = await this.aiService.generateStructuredSuggestions(
             prompt,
@@ -96,7 +108,6 @@ export class SuggestionsService {
             weather,
             events,
         };
-        console.log('Generated context for user:', req);
         return req;
     }
 }
