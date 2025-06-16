@@ -45,7 +45,6 @@ export class AiService {
     async generateStructuredSuggestions(
         systemPrompt: string,
         userPrompt: string,
-
         context: any,
     ): Promise<SuggestionResultDto[]> {
         try {

@@ -9,29 +9,31 @@ import { StructuredSuggestionDto } from './dto/structured-suggestions.dto';
 @ApiTags('AI')
 @Controller('ai')
 export class AiController {
-  constructor(private readonly aiService: AiService) {}
+    constructor(private readonly aiService: AiService) {}
 
-  @Get('suggestion')
-  @ApiOperation({ summary: 'Get activity suggestion (text only)' })
-  @ApiResponse({ status: 200, description: 'Text-based AI suggestion' })
-  async getSuggestion(@Query() query: PromptDto): Promise<string> {
-    return this.aiService.generateResponse(query.prompt);
-  }
+    @Get('suggestion')
+    @ApiOperation({ summary: 'Get activity suggestion (text only)' })
+    @ApiResponse({ status: 200, description: 'Text-based AI suggestion' })
+    async getSuggestion(@Query() query: PromptDto): Promise<string> {
+        return this.aiService.generateResponse(query.prompt);
+    }
 
-  @Post('structured-suggestions')
-  @ApiOperation({ summary: 'Get structured JSON-based activity suggestions' })
-  @ApiResponse({
-    status: 200,
-    description: 'Returns array of structured suggestion objects',
-    type: SuggestionResultDto,
-    isArray: true,
-  })
-  async getStructuredSuggestions(
-    @Body() body: StructuredSuggestionDto,
-  ): Promise<SuggestionResultDto[]> {
-    return this.aiService.generateStructuredSuggestions(
-      body.prompt,
-      body.context,
-    );
-  }
+    @Post('structured-suggestions')
+    @ApiOperation({ summary: 'Get structured JSON-based activity suggestions' })
+    @ApiResponse({
+        status: 200,
+        description: 'Returns array of structured suggestion objects',
+        type: SuggestionResultDto,
+        isArray: true,
+    })
+    async getStructuredSuggestions(
+        @Body() body: StructuredSuggestionDto,
+    ): Promise<SuggestionResultDto[]> {
+        return this.aiService.generateStructuredSuggestions(
+            body.systemPrompt,
+            body.userPrompt,
+
+            body.context,
+        );
+    }
 }

@@ -3,11 +3,18 @@ import { IsObject, IsString } from 'class-validator';
 
 export class StructuredSuggestionDto {
     @ApiProperty({
+        description: 'System prompt as input to OpenAI',
+        example:
+            'You are an AI assistant that provides personalized activity suggestions based on user preferences and context.',
+    })
+    @IsString()
+    systemPrompt: string;
+    @ApiProperty({
         description: 'User prompt as input to OpenAI',
         example: 'Gib mir 5 Aktivitäten basierend auf dem folgenden Kontext',
     })
     @IsString()
-    prompt: string;
+    userPrompt: string;
 
     @ApiProperty({
         description:
