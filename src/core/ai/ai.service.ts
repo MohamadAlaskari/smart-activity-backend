@@ -43,18 +43,20 @@ export class AiService {
     }
 
     async generateStructuredSuggestions(
-        prompt: string,
+        systemPrompt: string,
+        userPrompt: string,
+
         context: any,
     ): Promise<SuggestionResultDto[]> {
         try {
             const messages: ChatCompletionMessageParam[] = [
                 {
                     role: 'system',
-                    content: `You generate personalized activity suggestions in structured JSON format. Suggestions are based on user preferences, weather, and nearby events.`,
+                    content: systemPrompt,
                 },
                 {
                     role: 'user',
-                    content: prompt,
+                    content: userPrompt,
                 },
                 {
                     role: 'user',

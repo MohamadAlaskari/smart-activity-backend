@@ -43,7 +43,7 @@ export class AppConfigService {
         return key;
     }
     get openAiModel(): string {
-        const model = OPENAI_MODEL.OPENAI_MODEL;
+        const model = this.configService.get<string>(OPENAI_MODEL.OPENAI_MODEL);
         if (!model) throw new Error('Missing OPENAI_MODEL');
         return model;
     }

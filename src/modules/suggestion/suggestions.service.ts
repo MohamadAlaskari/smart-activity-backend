@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DirectionsService } from '../directions/directions.service';
 import { UserPreferencesService } from '../user-preferences/user-preferences.service';
 import { EventsService } from '../events/events.service';
 import { WeatherService } from '../weather/weather.service';
 import { AiService } from 'src/core/ai/ai.service';
+import { SYSTEM_PROMPT, USERPROMPT } from './utils/suggestion.constant';
 
 interface Coordinates {
     lat: number;
@@ -42,20 +45,11 @@ export class SuggestionsService {
         );
         console.log('🧠 Final AI Context:', JSON.stringify(context, null, 2));
 
-        const prompt: string = `Generate 7 personalized suggestions for a user in ${context.city} on ${context.date}.
-Preferences:
-- Vibes: ${context.preferences.selectedVibes.join(', ')}
-- LifeVibes: ${context.preferences.selectedLifeVibes.join(', ')}
-- Experience types: ${context.preferences.selectedExperienceTypes.join(', ')}
-- Time windows: ${context.preferences.selectedTimeWindows.join(', ')}
-- Group sizes: ${context.preferences.selectedGroupSizes.join(', ')}
-- Budget: ${context.preferences.budget} €
-- Max distance: ${context.preferences.distanceRadius} km
-
-Generate activities that match as many preferences as possible.`;
+        const userPrompt: string = USERPROMPT(context);
 
         const suggestions = await this.aiService.generateStructuredSuggestions(
-            prompt,
+            SYSTEM_PROMPT,
+            userPrompt,
             context,
         );
         return suggestions;
@@ -68,14 +62,14 @@ Generate activities that match as many preferences as possible.`;
     ): Promise<SuggestionContext> {
         const { lat, lon } = coordinates;
 
-        // 🏙️ Stadtname ermitteln
+        //  Stadtname ermitteln
         const cityResult = await this.directionsService.getCityFromCoordinates(
             lat,
             lon,
         );
         const city = cityResult ?? 'Unknown';
 
-        // 💡 Nutzerpräferenzen holen
+        //  Nutzerpräferenzen holen
         const preferences =
             await this.userPreferencesService.getByUserId(userId);
         if (!preferences) {
@@ -84,14 +78,14 @@ Generate activities that match as many preferences as possible.`;
             );
         }
 
-        // ☀️ Wettervorhersage
+        //  Wettervorhersage
         const weather = await this.weatherService.getForecastByDate(
             lat,
             lon,
             date,
         );
 
-        // 🎫 Events abrufen
+        //  Events abrufen
         const events = await this.eventsService.getEventsByLocationAndDate(
             lat,
             lon,
