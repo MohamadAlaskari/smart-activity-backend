@@ -16,14 +16,14 @@ export class UserPreferences {
     @JoinColumn()
     user: User;
 
-    @Column({ type: 'json' })
-    selectedVibes: string[];
+    @Column({ type: 'longtext' })
+    selectedVibes: string;
 
-    @Column({ type: 'json' })
-    selectedLifeVibes: string[];
+    @Column({ type: 'longtext' })
+    selectedLifeVibes: string;
 
-    @Column({ type: 'json' })
-    selectedExperienceTypes: string[];
+    @Column({ type: 'longtext' })
+    selectedExperienceTypes: string;
 
     @Column('float')
     budget: number;
@@ -31,9 +31,9 @@ export class UserPreferences {
     @Column('float')
     distanceRadius: number;
 
-    @Column({ type: 'json' })
-    selectedTimeWindows: string[];
+    @Column({ type: 'longtext' })
+    selectedTimeWindows: string;
 
-    @Column({ type: 'json' })
-    selectedGroupSizes: string[];
+    @Column({ type: 'longtext' })
+    selectedGroupSizes: string;
 }
