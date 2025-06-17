@@ -47,8 +47,24 @@ export class UserPreferencesService {
             budget: dto.budget,
             distanceRadius: dto.distanceRadius,
         });
+        const createdPrefs = await this.repo.save(newPrefs);
 
-        return this.repo.save(newPrefs);
+        return {
+            ...createdPrefs,
+            selectedVibes: this.safeJsonParse(createdPrefs.selectedVibes),
+            selectedLifeVibes: this.safeJsonParse(
+                createdPrefs.selectedLifeVibes,
+            ),
+            selectedExperienceTypes: this.safeJsonParse(
+                createdPrefs.selectedExperienceTypes,
+            ),
+            selectedTimeWindows: this.safeJsonParse(
+                createdPrefs.selectedTimeWindows,
+            ),
+            selectedGroupSizes: this.safeJsonParse(
+                createdPrefs.selectedGroupSizes,
+            ),
+        };
     }
 
     async getByUserId(userId: string) {
@@ -86,7 +102,23 @@ export class UserPreferencesService {
             budget: dto.budget,
             distanceRadius: dto.distanceRadius,
         });
+        const updatedPrefs = await this.repo.save(prefs);
 
-        return this.repo.save(prefs);
+        return {
+            ...updatedPrefs,
+            selectedVibes: this.safeJsonParse(updatedPrefs.selectedVibes),
+            selectedLifeVibes: this.safeJsonParse(
+                updatedPrefs.selectedLifeVibes,
+            ),
+            selectedExperienceTypes: this.safeJsonParse(
+                updatedPrefs.selectedExperienceTypes,
+            ),
+            selectedTimeWindows: this.safeJsonParse(
+                updatedPrefs.selectedTimeWindows,
+            ),
+            selectedGroupSizes: this.safeJsonParse(
+                updatedPrefs.selectedGroupSizes,
+            ),
+        };
     }
 }
