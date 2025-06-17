@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -15,6 +16,14 @@ export class UserPreferencesService {
         @InjectRepository(User)
         private readonly userRepo: Repository<User>,
     ) {}
+
+    private safeJsonParse(value: string): any {
+        try {
+            return value ? JSON.parse(value) : [];
+        } catch {
+            return [];
+        }
+    }
 
     async create(userId: string, dto: CreateUserPreferencesDto) {
         const user = await this.userRepo.findOne({ where: { id: userId } });
@@ -50,11 +59,13 @@ export class UserPreferencesService {
 
         return {
             ...prefs,
-            selectedVibes: JSON.parse(prefs.selectedVibes),
-            selectedLifeVibes: JSON.parse(prefs.selectedLifeVibes),
-            selectedExperienceTypes: JSON.parse(prefs.selectedExperienceTypes),
-            selectedTimeWindows: JSON.parse(prefs.selectedTimeWindows),
-            selectedGroupSizes: JSON.parse(prefs.selectedGroupSizes),
+            selectedVibes: this.safeJsonParse(prefs.selectedVibes),
+            selectedLifeVibes: this.safeJsonParse(prefs.selectedLifeVibes),
+            selectedExperienceTypes: this.safeJsonParse(
+                prefs.selectedExperienceTypes,
+            ),
+            selectedTimeWindows: this.safeJsonParse(prefs.selectedTimeWindows),
+            selectedGroupSizes: this.safeJsonParse(prefs.selectedGroupSizes),
         };
     }
 
@@ -65,7 +76,6 @@ export class UserPreferencesService {
         if (!prefs) throw new NotFoundException('Preferences not found');
 
         Object.assign(prefs, {
-            ...dto,
             selectedVibes: JSON.stringify(dto.selectedVibes),
             selectedLifeVibes: JSON.stringify(dto.selectedLifeVibes),
             selectedExperienceTypes: JSON.stringify(
@@ -73,6 +83,8 @@ export class UserPreferencesService {
             ),
             selectedTimeWindows: JSON.stringify(dto.selectedTimeWindows),
             selectedGroupSizes: JSON.stringify(dto.selectedGroupSizes),
+            budget: dto.budget,
+            distanceRadius: dto.distanceRadius,
         });
 
         return this.repo.save(prefs);
