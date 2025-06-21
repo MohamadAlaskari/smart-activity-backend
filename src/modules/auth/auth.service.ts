@@ -63,9 +63,7 @@ export class AuthService {
             throw new UnauthorizedException('Invalid token');
         }
     }
-    async login(
-        loginDto: LoginDto,
-    ): Promise<{ accessToken: string; isFirstLogin: boolean }> {
+    async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
         const user = await this.usersService.findByEmail(loginDto.email);
         if (!user) throw new UnauthorizedException('Invalid credentials');
 
@@ -98,7 +96,6 @@ export class AuthService {
 
         return {
             accessToken: token,
-            isFirstLogin,
         };
     }
 
