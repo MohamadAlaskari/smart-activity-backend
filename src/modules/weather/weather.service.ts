@@ -4,6 +4,7 @@ import { firstValueFrom } from 'rxjs';
 import { AppConfigService } from '../../common/app-config.service';
 import { VISUAL_CROSSING_BASE_URL } from 'src/common/utils/constants/weather.constants';
 import { VisualCrossingResponse } from './interfaces/weather-week-forecast.interface';
+import { VisualCrossingWeatherResponse } from './interfaces/DailyForecast';
 
 @Injectable()
 export class WeatherService {
@@ -17,14 +18,18 @@ export class WeatherService {
     }
 
     async getWeekForecastByLocation(location: string): Promise<any> {
-        const url = this.buildForecastUrl(location, 'today/next7days');
+        const url = this.buildForecastUrl(location, 'today/next6days');
 
         try {
             const response = await firstValueFrom(
-                this.httpService.get<VisualCrossingResponse>(url),
+                this.httpService.get<VisualCrossingWeatherResponse>(url),
             );
+
             return response.data.days.map((day) => ({
-                ...day,
+                datetime: day.datetime,
+                tempmax: day.tempmax,
+                tempmin: day.tempmin,
+                icon: day.icon,
             }));
         } catch {
             throw new InternalServerErrorException(
