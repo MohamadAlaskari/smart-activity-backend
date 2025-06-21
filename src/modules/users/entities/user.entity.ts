@@ -58,6 +58,9 @@ export class User {
     })
     dateOfBirth?: Date;
 
+    @Column({ default: true })
+    isFirstLogin: boolean;
+
     @CreateDateColumn({ type: 'timestamp' })
     @ApiProperty({ description: 'Timestamp when the user was created' })
     createdAt: Date;
