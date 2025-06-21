@@ -17,14 +17,6 @@ export class UserPreferencesService {
         private readonly userRepo: Repository<User>,
     ) {}
 
-    private safeJsonParse(value: string): any {
-        try {
-            return value ? JSON.parse(value) : [];
-        } catch {
-            return [];
-        }
-    }
-
     async create(userId: string, dto: CreateUserPreferencesDto) {
         const user = await this.userRepo.findOne({ where: { id: userId } });
         if (!user) throw new NotFoundException('User not found');
@@ -82,6 +74,8 @@ export class UserPreferencesService {
             ),
             selectedTimeWindows: this.safeJsonParse(prefs.selectedTimeWindows),
             selectedGroupSizes: this.safeJsonParse(prefs.selectedGroupSizes),
+            budget: prefs.budget,
+            distanceRadius: prefs.distanceRadius,
         };
     }
 
@@ -120,5 +114,13 @@ export class UserPreferencesService {
                 updatedPrefs.selectedGroupSizes,
             ),
         };
+    }
+
+    private safeJsonParse(value: string): any {
+        try {
+            return value ? JSON.parse(value) : [];
+        } catch {
+            return [];
+        }
     }
 }
