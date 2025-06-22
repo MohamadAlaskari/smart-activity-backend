@@ -43,7 +43,6 @@ export class SuggestionsService {
             coordinates,
             date,
         );
-        console.log('🧠 Final AI Context:', JSON.stringify(context, null, 2));
 
         const userPrompt: string = USERPROMPT(context);
 
