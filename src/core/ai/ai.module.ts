@@ -5,9 +5,9 @@ import { AiController } from './ai.controller';
 import { AppConfigService } from 'src/common/app-config.service';
 
 @Module({
-  imports: [HttpModule],
-  controllers: [AiController],
-  providers: [AiService, AppConfigService],
-  exports: [AiService],
+    imports: [HttpModule],
+    controllers: [AiController],
+    providers: [AiService, AppConfigService],
+    exports: [AiService],
 })
 export class AiModule {}

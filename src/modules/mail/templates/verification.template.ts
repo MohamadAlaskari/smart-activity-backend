@@ -1,5 +1,5 @@
 export function verificationEmailTemplate(url: string): string {
-  return `
+    return `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <h2 style="color: #4CAF50;">Welcome to VibeDay!</h2>
       <p>Thank you for joining VibeDay. To activate your account, please confirm your email address:</p>

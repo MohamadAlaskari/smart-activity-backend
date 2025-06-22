@@ -1,5 +1,5 @@
 export function resetPasswordSuccessTemplate(): string {
-  return `
+    return `
     <html>
       <head>
         <title>VibeDay – Password Reset Successful</title>

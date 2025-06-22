@@ -84,13 +84,20 @@ export class SuggestionsService {
             lon,
             date,
         );
+        let distanceRadius: number = 50;
+        if (
+            preferences.status === 'success' &&
+            'distanceRadius' in preferences.data
+        ) {
+            distanceRadius = preferences.data.distanceRadius;
+        }
 
         //  Events abrufen
         const events = await this.eventsService.getEventsByLocationAndDate(
             lat,
             lon,
             date,
-            preferences.distanceRadius || 50,
+            distanceRadius,
             20,
         );
         const req = {

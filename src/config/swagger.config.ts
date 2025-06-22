@@ -9,13 +9,13 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
  * @param app NestJS Application instance
  */
 export function setupSwagger(app: INestApplication) {
-  const config = new DocumentBuilder()
-    .setTitle('Smart Activity Backend')
-    .setDescription('API Documentation for the Smart Activity App')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
+    const config = new DocumentBuilder()
+        .setTitle('Smart Activity Backend')
+        .setDescription('API Documentation for the Smart Activity App')
+        .setVersion('1.0')
+        .addBearerAuth()
+        .build();
 
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document);
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('swagger', app, document);
 }

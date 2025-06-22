@@ -7,51 +7,51 @@ import { updatePasswordEmailTemplate } from './templates/updatePasswordEmail.tem
 
 @Injectable()
 export class MailService {
-  constructor(private readonly mailerService: MailerService) {}
+    constructor(private readonly mailerService: MailerService) {}
 
-  async sendMail(options: MailOptions) {
-    try {
-      await this.mailerService.sendMail({
-        to: options.to,
-        subject: options.subject,
-        html: options.html,
-      });
-    } catch (error) {
-      console.log(error);
-      throw new RequestTimeoutException();
+    async sendMail(options: MailOptions) {
+        try {
+            await this.mailerService.sendMail({
+                to: options.to,
+                subject: options.subject,
+                html: options.html,
+            });
+        } catch (error) {
+            console.log(error);
+            throw new RequestTimeoutException();
+        }
     }
-  }
 
-  async sendVerificationEmail(
-    to: string,
-    token: string,
-    baseUrl: string,
-  ): Promise<void> {
-    const url = `${baseUrl}/auth/verify-email?token=${token}`;
-    return this.sendMail({
-      to,
-      subject: `You're almost in! Confirm your VibeDay email ✨`,
-      html: verificationEmailTemplate(url),
-    });
-  }
+    async sendVerificationEmail(
+        to: string,
+        token: string,
+        baseUrl: string,
+    ): Promise<void> {
+        const url = `${baseUrl}/auth/verify-email?token=${token}`;
+        return this.sendMail({
+            to,
+            subject: `You're almost in! Confirm your VibeDay email ✨`,
+            html: verificationEmailTemplate(url),
+        });
+    }
 
-  async sendPasswordResetEmail(to: string, resetUrl: string) {
-    const subject = 'Reset your VibeDay password';
-    const html = updatePasswordEmailTemplate(resetUrl);
+    async sendPasswordResetEmail(to: string, resetUrl: string) {
+        const subject = 'Reset your VibeDay password';
+        const html = updatePasswordEmailTemplate(resetUrl);
 
-    await this.mailerService.sendMail({
-      to,
-      subject,
-      html,
-    });
-  }
+        await this.mailerService.sendMail({
+            to,
+            subject,
+            html,
+        });
+    }
 
-  async sendWelcomeEmail(to: string, username: string) {
-    const html = welcomeEmailTemplate(username);
-    await this.sendMail({
-      to,
-      subject: `Welcome to VibeDay, ${username}! Let’s get started 🌟`,
-      html,
-    });
-  }
+    async sendWelcomeEmail(to: string, username: string) {
+        const html = welcomeEmailTemplate(username);
+        await this.sendMail({
+            to,
+            subject: `Welcome to VibeDay, ${username}! Let’s get started 🌟`,
+            html,
+        });
+    }
 }

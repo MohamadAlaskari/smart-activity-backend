@@ -1,5 +1,5 @@
 export function updatePasswordEmailTemplate(url: string): string {
-  return `
+    return `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <h2 style="color: #4CAF50;">Reset Your Password</h2>
       <p>We received a request to reset your password for your <strong style="color: #4CAF50;">VibeDay</strong> account.</p>

@@ -1,5 +1,5 @@
 export type MailOptions = {
-  to: string;
-  subject: string;
-  html: string;
+    to: string;
+    subject: string;
+    html: string;
 };

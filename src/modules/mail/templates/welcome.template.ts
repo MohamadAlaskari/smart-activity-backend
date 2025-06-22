@@ -1,5 +1,5 @@
 export function welcomeEmailTemplate(username: string): string {
-  return `
+    return `
     <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
       <h2>Hello ${username} 👋</h2>
       <p>Welcome to <strong style="color: #4CAF50;">VibeDay</strong> – we're thrilled to have you on board!</p>

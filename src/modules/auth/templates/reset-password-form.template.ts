@@ -1,5 +1,5 @@
 export function resetPasswordFormTemplate(token: string): string {
-  return `
+    return `
     <html>
       <head>
         <title>Reset Your VibeDay Password</title>

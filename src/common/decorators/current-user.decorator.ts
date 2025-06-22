@@ -3,9 +3,9 @@ import { JWTPayloadTypes } from '../utils/types/types';
 import { CURRENT_USER_KEY } from '../utils/constants/user.constants';
 
 export const CurrentUser = createParamDecorator(
-  (data: undefined, ctx: ExecutionContext) => {
-    const request: Request = ctx.switchToHttp().getRequest();
-    const user = request[CURRENT_USER_KEY] as JWTPayloadTypes;
-    return user;
-  },
+    (data: undefined, ctx: ExecutionContext) => {
+        const request: Request = ctx.switchToHttp().getRequest();
+        const user = request[CURRENT_USER_KEY] as JWTPayloadTypes;
+        return user;
+    },
 );

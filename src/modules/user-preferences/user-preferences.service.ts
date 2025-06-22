@@ -63,19 +63,34 @@ export class UserPreferencesService {
         const prefs = await this.repo.findOne({
             where: { user: { id: userId } },
         });
-        if (!prefs) throw new NotFoundException('Preferences not found');
+
+        if (!prefs) {
+            return {
+                status: 'empty',
+                message: 'User preferences not found. Returning default.',
+                data: {},
+            };
+        }
 
         return {
-            ...prefs,
-            selectedVibes: this.safeJsonParse(prefs.selectedVibes),
-            selectedLifeVibes: this.safeJsonParse(prefs.selectedLifeVibes),
-            selectedExperienceTypes: this.safeJsonParse(
-                prefs.selectedExperienceTypes,
-            ),
-            selectedTimeWindows: this.safeJsonParse(prefs.selectedTimeWindows),
-            selectedGroupSizes: this.safeJsonParse(prefs.selectedGroupSizes),
-            budget: prefs.budget,
-            distanceRadius: prefs.distanceRadius,
+            status: 'success',
+            message: 'User preferences found.',
+            data: {
+                ...prefs,
+                selectedVibes: this.safeJsonParse(prefs.selectedVibes),
+                selectedLifeVibes: this.safeJsonParse(prefs.selectedLifeVibes),
+                selectedExperienceTypes: this.safeJsonParse(
+                    prefs.selectedExperienceTypes,
+                ),
+                selectedTimeWindows: this.safeJsonParse(
+                    prefs.selectedTimeWindows,
+                ),
+                selectedGroupSizes: this.safeJsonParse(
+                    prefs.selectedGroupSizes,
+                ),
+                budget: prefs.budget,
+                distanceRadius: prefs.distanceRadius,
+            },
         };
     }
 
