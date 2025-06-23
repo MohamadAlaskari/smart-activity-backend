@@ -1,0 +1,51 @@
+variables:
+  SERVICE: backend
+  IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  STACK_DEV: vibeday-dev
+  URL_DEV: vibeday-api.dev.center-io.com
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  tags:
+    - vibeday-dev
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build --pull -t $IMAGE .
+    - docker push $IMAGE
+  only:
+    - main
+    - develop
+    - master
+
+deploy-dev:
+  stage: deploy
+  needs: [build]
+  tags:
+    - vibeday-dev
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker service update --image $IMAGE --with-registry-auth ${STACK_DEV}_${SERVICE}
+  environment:
+    name: develop
+    url: https://$URL_DEV
+  only:
+    - develop
+
+deploy-prod:
+  stage: deploy
+  needs: [build]
+  tags:
+    - vibeday-dev
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker service update --image $IMAGE --with-registry-auth vibeday-prod_${SERVICE}
+  environment:
+    name: production
+    url: https://vibeday-api.center-io.com
+  only:
+    - main
+    - master
