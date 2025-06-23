@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { HealthData } from 'src/modules/health-data/entities/health-data.entity';
 import { UserPreferences } from 'src/modules/user-preferences/entities/user-preferences.entity';
 import {
     Entity,
@@ -7,6 +8,7 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     OneToOne,
+    OneToMany,
 } from 'typeorm';
 
 @Entity('users')
@@ -15,6 +17,9 @@ export class User {
         cascade: ['remove'],
     })
     preferences: UserPreferences;
+
+    @OneToMany(() => HealthData, (healthData) => healthData.user)
+    healthData: HealthData[];
 
     @PrimaryGeneratedColumn('uuid')
     @ApiProperty({ description: 'Unique user ID' })

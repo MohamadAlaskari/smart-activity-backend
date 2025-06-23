@@ -18,6 +18,8 @@ import { UserPreferencesService } from './user-preferences.service';
 import { CreateUserPreferencesDto } from './dto/create-user-preferences.dto';
 import { UpdateUserPreferencesDto } from './dto/update-user-preferences.dto';
 import { AuthGuard } from 'src/common/guards/auth.guard';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { User } from '../users/entities/user.entity';
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
@@ -28,20 +30,12 @@ export class UserPreferencesController {
 
     @Post()
     @ApiOperation({ summary: 'Create user preferences' })
-    @ApiQuery({
-        name: 'userId',
-        required: true,
-        description: 'UUID of the user',
-    })
     @ApiResponse({
         status: 201,
         description: 'Preferences created successfully',
     })
-    create(
-        @Query('userId') userId: string,
-        @Body() dto: CreateUserPreferencesDto,
-    ) {
-        return this.preferencesService.create(userId, dto);
+    create(@CurrentUser() user: User, @Body() dto: CreateUserPreferencesDto) {
+        return this.preferencesService.create(user.id, dto);
     }
 
     @Get()
@@ -57,15 +51,11 @@ export class UserPreferencesController {
 
     @Patch()
     @ApiOperation({ summary: 'Update preferences by user ID' })
-    @ApiQuery({ name: 'userId', required: true })
     @ApiResponse({
         status: 200,
         description: 'Preferences updated successfully',
     })
-    update(
-        @Query('userId') userId: string,
-        @Body() dto: UpdateUserPreferencesDto,
-    ) {
-        return this.preferencesService.update(userId, dto);
+    update(@CurrentUser() user: User, @Body() dto: UpdateUserPreferencesDto) {
+        return this.preferencesService.update(user.id, dto);
     }
 }

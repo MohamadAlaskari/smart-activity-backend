@@ -1,19 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-    IsDateString,
-    IsLatitude,
-    IsLongitude,
-    IsString,
-} from 'class-validator';
+import { IsDateString, IsLatitude, IsLongitude } from 'class-validator';
 
 export class CreateSuggestionDto {
-    @ApiProperty({
-        example: 'f2fb62f9-399f-4582-8efb-ac1c6ac9c21c',
-        description: 'User ID',
-    })
-    @IsString()
-    userId: string;
-
     @ApiProperty({ example: 53.0793, description: 'Latitude' })
     @IsLatitude()
     lat: number;

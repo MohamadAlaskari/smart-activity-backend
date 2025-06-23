@@ -11,6 +11,7 @@ import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserPreferencesModule } from './modules/user-preferences/user-preferences.module';
 import { SuggestionsModule } from './modules/suggestion/suggestions.module';
+import { HealthDataModule } from './modules/health-data/health-data.module';
 
 @Module({
     imports: [
@@ -27,6 +28,7 @@ import { SuggestionsModule } from './modules/suggestion/suggestions.module';
         AuthModule,
         UsersModule,
         UserPreferencesModule,
+        HealthDataModule,
         AiModule,
         WeatherModule,
         EventsModule,

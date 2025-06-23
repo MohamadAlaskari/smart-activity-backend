@@ -9,8 +9,8 @@ import {
 
 @Entity('user_preferences')
 export class UserPreferences {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
     @OneToOne(() => User, { onDelete: 'CASCADE' })
     @JoinColumn()
