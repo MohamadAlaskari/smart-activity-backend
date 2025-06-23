@@ -1,17 +1,8 @@
-import {
-    Controller,
-    Get,
-    Patch,
-    Post,
-    Body,
-    Query,
-    UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Patch, Post, Body, UseGuards } from '@nestjs/common';
 import {
     ApiTags,
     ApiOperation,
     ApiResponse,
-    ApiQuery,
     ApiBearerAuth,
 } from '@nestjs/swagger';
 import { UserPreferencesService } from './user-preferences.service';
@@ -40,13 +31,12 @@ export class UserPreferencesController {
 
     @Get()
     @ApiOperation({ summary: 'Get preferences by user ID' })
-    @ApiQuery({ name: 'userId', required: true })
     @ApiResponse({
         status: 200,
         description: 'Preferences retrieved successfully',
     })
-    getByUserId(@Query('userId') userId: string) {
-        return this.preferencesService.getByUserId(userId);
+    getByUserId(@CurrentUser() user: User) {
+        return this.preferencesService.getByUserId(user.id);
     }
 
     @Patch()
