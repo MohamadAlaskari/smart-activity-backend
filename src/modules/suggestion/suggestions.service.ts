@@ -71,7 +71,7 @@ export class SuggestionsService {
         //  Nutzerpräferenzen holen
         const preferences =
             await this.userPreferencesService.getByUserId(userId);
-        if (!preferences) {
+        if (!preferences || preferences.status === 'empty') {
             throw new NotFoundException(
                 `Preferences not found for user ${userId}`,
             );
