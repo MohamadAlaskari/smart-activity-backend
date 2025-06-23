@@ -9,6 +9,7 @@ import { DirectionsModule } from '../directions/directions.module';
 import { EventsModule } from '../events/events.module';
 import { UserPreferencesModule } from '../user-preferences/user-preferences.module';
 import { WeatherModule } from '../weather/weather.module';
+import { HealthDataModule } from '../health-data/health-data.module';
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { WeatherModule } from '../weather/weather.module';
         DirectionsModule,
         WeatherModule,
         EventsModule,
+        HealthDataModule,
     ],
     providers: [SuggestionsService, AiService, AppConfigService],
     controllers: [SuggestionsController],

@@ -7,6 +7,7 @@ import { EventsService } from '../events/events.service';
 import { WeatherService } from '../weather/weather.service';
 import { AiService } from 'src/core/ai/ai.service';
 import { SYSTEM_PROMPT, USERPROMPT } from './utils/suggestion.constant';
+import { HealthDataService } from '../health-data/health-data.service';
 
 interface Coordinates {
     lat: number;
@@ -30,6 +31,7 @@ export class SuggestionsService {
         private readonly userPreferencesService: UserPreferencesService,
         private readonly weatherService: WeatherService,
         private readonly eventsService: EventsService,
+        private readonly healthDataService: HealthDataService,
         private readonly aiService: AiService,
     ) {}
 
@@ -68,12 +70,19 @@ export class SuggestionsService {
         );
         const city = cityResult ?? 'Unknown';
 
-        //  Nutzerpräferenzen holen
+        //  User Preferences abrufen
         const preferences =
             await this.userPreferencesService.getByUserId(userId);
         if (!preferences || preferences.status === 'empty') {
             throw new NotFoundException(
                 `Preferences not found for user ${userId}`,
+            );
+        }
+
+        const healthData = await this.healthDataService.findAllByUser(userId);
+        if (!healthData || healthData.length === 0) {
+            throw new NotFoundException(
+                `Health data not found for user ${userId}`,
             );
         }
 
@@ -83,6 +92,11 @@ export class SuggestionsService {
             lon,
             date,
         );
+        if (!weather) {
+            throw new NotFoundException(
+                `Weather data not found for coordinates ${lat}, ${lon} on date ${date}`,
+            );
+        }
         let distanceRadius: number = 50;
         if (
             preferences.status === 'success' &&
@@ -104,7 +118,8 @@ export class SuggestionsService {
             coordinates: { lat, lon },
             city,
             date,
-            preferences,
+            preferences: preferences.data,
+            healthData,
             weather,
             events,
         };

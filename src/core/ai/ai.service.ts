@@ -87,6 +87,8 @@ export class AiService {
     "vibeMatch": [ "string" ],
     "images": [ "string" ],
     "url": "string"  // leave empty string "" if not based on a real event
+    "healthDataMatch": boolean,
+    "healthDataMatchReason": [ "string" ] // Maximal 4 short reasons, comma separated, why this suggestion fits the user's health data (e.g. "Low activity today, High stress, Little sleep last night"). If no health data match, set healthDataMatch to false and healthDataMatchReason to empty string.
   }
 ]
 Respond with only the array. No explanation.`,
