@@ -80,20 +80,18 @@ export class AuthService {
             );
         }
 
-        const isFirstLogin = user.isFirstLogin;
-
-        if (isFirstLogin) {
-            await this.usersService.update(user.id, { isFirstLogin: false });
-        }
-
         const token = await this.generateJWT({
             id: user.id,
             username: user.username,
             email: user.email,
         });
 
-        await this.mailService.sendWelcomeEmail(user.email, user.username);
-
+        // Sende E-Mail asynchron und ignoriere Fehler
+        this.mailService
+            .sendWelcomeEmail(user.email, user.username)
+            .catch((err) => {
+                console.warn('E-Mail-Versand fehlgeschlagen:', err.message);
+            });
         return {
             accessToken: token,
         };
