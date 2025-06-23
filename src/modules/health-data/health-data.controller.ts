@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Body, UseGuards } from '@nestjs/common';
 import {
     ApiTags,
     ApiOperation,
@@ -26,6 +26,20 @@ export class HealthDataController {
     @ApiOkResponse({ type: HealthData })
     create(@Body() dto: CreateHealthDataDto, @CurrentUser() user: User) {
         return this.healthDataService.create(dto, user.id);
+    }
+
+    @Get('')
+    @ApiOperation({
+        summary: 'Get all health data entries for the current user',
+    })
+    @ApiOkResponse({
+        description:
+            'Array of health data entries (without User object, with userId)',
+        type: Object, // Wenn du ein DTO willst, z. B. type: [HealthDataResponseDto]
+        isArray: true,
+    })
+    async getMyHealthData(@CurrentUser() user: User) {
+        return await this.healthDataService.findAllByUser(user.id);
     }
 }
 

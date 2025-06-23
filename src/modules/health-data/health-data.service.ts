@@ -34,6 +34,14 @@ export class HealthDataService {
         return { userId: userObj.id, ...rest };
     }
 
+    async findAllByUser(userId: string): Promise<HealthData[]> {
+        console.log(`Finding all health data for user: ${userId}`);
+        return this.healthDataRepository.find({
+            where: { user: { id: userId } },
+            order: { date: 'DESC' },
+        });
+    }
+
     /*
     async update(id: string, dto: CreateHealthDataDto): Promise<HealthData> {
         const healthData = await this.healthDataRepository.findOne({
@@ -54,12 +62,6 @@ export class HealthDataService {
         return this.healthDataRepository.save(healthData);
     }
 */
-    async findAllByUser(userId: string): Promise<HealthData[]> {
-        return this.healthDataRepository.find({
-            where: { user: { id: userId } },
-            order: { date: 'DESC' },
-        });
-    }
 
     async findOneByUserAndDate(
         userId: string,
