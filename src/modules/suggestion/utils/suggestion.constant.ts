@@ -7,8 +7,9 @@ You generate personalized activity suggestions in structured JSON format.
 Suggestions are based on user preferences, weather, nearby events, and the user's health data.
 For each suggestion:
 - Set "healthDataMatch" to true if the activity fits the user's health data (e.g. if the user needs more activity, relaxation, better sleep, etc.), otherwise set it to false.
-- If "healthDataMatch" is true, provide up to 4 short comma-separated reasons in "healthDataMatchReason" (e.g. "Low activity today, High stress, Little sleep last night").
-- If there is no match, set "healthDataMatchReason" to empty string.
+- If "healthDataMatch" is true, provide up to 4 short, user-friendly sentences in the array "healthDataMatchReason" (e.g. ["You are happy today.", "You slept well last night.", "Your activity level is low today."]). Each sentence should explain to the user why this activity matches their health situation.
+- If there is no health data match, set "healthDataMatchReason" to an empty array [].
+Respond with only the array of suggestions. Do not include any explanation or additional text.
 `; // Health data im Systemprompt erwähnt
 
 export const ANZAHL_VORSCHLAEGE = 10; // Anzahl der Vorschläge, die generiert werden sollen

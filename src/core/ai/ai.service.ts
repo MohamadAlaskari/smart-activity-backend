@@ -88,7 +88,7 @@ export class AiService {
     "images": [ "string" ],
     "url": "string"  // leave empty string "" if not based on a real event
     "healthDataMatch": boolean,
-    "healthDataMatchReason": [ "string" ] // Maximal 4 short reasons, comma separated, why this suggestion fits the user's health data (e.g. "Low activity today, High stress, Little sleep last night"). If no health data match, set healthDataMatch to false and healthDataMatchReason to empty string.
+    "healthDataMatchReason": [ "string" ]  // Array of up to 4 short, user-friendly sentences explaining why this suggestion matches the user's health data. // Each reason should be a complete sentence, e.g. "You are happy today", "You slept well last night", "Your activity level is low today". // If there is no match, set healthDataMatch to false and healthDataMatchReason to an empty array [].
   }
 ]
 Respond with only the array. No explanation.`,
