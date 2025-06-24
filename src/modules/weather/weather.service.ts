@@ -110,7 +110,7 @@ export class WeatherService {
         date: string,
     ): Promise<any[]> {
         const location = `${latitude},${longitude}`;
-        const url = this.buildForecastUrl(location, date, 'hours');
+        const url = this.buildForecastUrl(location, date, 'days');
 
         try {
             const response = await firstValueFrom(
