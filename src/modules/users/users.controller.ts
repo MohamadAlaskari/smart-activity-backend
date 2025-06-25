@@ -3,7 +3,6 @@ import {
     Get,
     Post,
     Body,
-    Param,
     Delete,
     Patch,
     UseGuards,
@@ -18,6 +17,8 @@ import { UsersService } from 'src/modules/users/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '../../common/guards/auth.guard';
+import { User } from './entities/user.entity';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 
 @UseGuards(AuthGuard)
 @ApiBearerAuth()
@@ -39,21 +40,21 @@ export class UsersController {
         return this.usersService.findAll();
     }
 
-    @Get(':id')
-    @ApiOperation({ summary: 'Get user by ID' })
-    findOne(@Param('id') id: string) {
-        return this.usersService.findOne(id);
+    @Get()
+    @ApiOperation({ summary: 'Get user information by token' })
+    findOne(@CurrentUser() user: User) {
+        return this.usersService.findOne(user.id);
     }
 
-    @Patch(':id')
-    @ApiOperation({ summary: 'Update user by ID' })
-    update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
-        return this.usersService.update(id, dto);
+    @Patch()
+    @ApiOperation({ summary: 'Update user information by token' })
+    update(@CurrentUser() user: User, @Body() dto: UpdateUserDto) {
+        return this.usersService.update(user.id, dto);
     }
 
-    @Delete(':id')
-    @ApiOperation({ summary: 'Delete user by ID' })
-    remove(@Param('id') id: string) {
-        return this.usersService.remove(id);
+    @Delete()
+    @ApiOperation({ summary: 'Delete user account by token' })
+    remove(@CurrentUser() user: User) {
+        return this.usersService.remove(user.id);
     }
 }
