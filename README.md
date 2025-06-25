@@ -508,11 +508,66 @@ http://localhost:3000/swagger
 
 ## ✅ Status
 
-- [x] Registrierung + E-Mail-Verifizierung
-- [x] Login + JWT
-- [x] User CRUD
-- [x] Deployment + Swagger
-- [x] MailService
+All backend features of the VibeDay app have been fully implemented and are production-ready:
+
+### 🔐 Authentication & Security
+- [x] Registration with email + password
+- [x] Email verification via token
+- [x] JWT-based login
+- [x] Password reset flow (request + form + token-based reset)
+- [x] AuthGuard protection for private routes
+- [x] Password hashing with bcrypt
+- [x] Secure token handling via headers
+- [x] HTTPS-ready deployment setup
+
+### 👤 User Management
+- [x] Create, read, update, and delete user accounts
+- [x] Get current logged-in user (`/auth/current-user`)
+
+### ⚙️ Preferences Module
+- [x] Save and update preferences (budget, radius, time windows, group size)
+- [x] Fetch preferences for current user
+
+### ❤️ Health Data Integration
+- [x] Submit health metrics (e.g., sleep, stress, blood pressure)
+- [x] Retrieve personal health data
+- [x] Integrate health context into AI suggestions
+
+### ☁️ Weather Module
+- [x] Get daily forecast by coordinates
+- [x] Get 7-day forecast (by city or coordinates)
+- [x] Get hourly forecasts
+- [x] Fetch forecast for a specific date
+
+### 🎫 Events Module
+- [x] Fetch local events via Ticketmaster API
+- [x] Filter events by date, radius, time, and size
+
+### 🚗 Directions Module
+- [x] Get travel duration & distance between two points
+- [x] Support for multiple transport modes (drive, walk, bike, transit)
+- [x] Resolve city from coordinates
+
+### 🤖 AI-Powered Suggestions
+- [x] Generate personalized activity suggestions
+- [x] Use real-time context: preferences, weather, events, health
+- [x] Return structured JSON with logic explanations
+
+### ✉️ Email Notifications
+- [x] Welcome email
+- [x] Email verification link
+- [x] Password reset link
+- [x] HTML templates via Hostinger SMTP
+
+### 🧪 Developer Experience
+- [x] Swagger (OpenAPI) documentation for all endpoints
+- [x] Global exception handling
+- [x] Class-validator for input validation
+- [x] DTOs and modular code structure
+
+### 🚀 Deployment
+- [x] Deployed on Vercel
+- [x] Custom domain + SSL via Hostinger DNS
 
 ---
 
