@@ -31,7 +31,6 @@ https://smart-activity-backend.alaskaritech.com
 ```
 ---
 
-
 ## 📦 Features
 
 - 🔐 **Authentication System**  
@@ -82,47 +81,92 @@ https://smart-activity-backend.alaskaritech.com
   - Developer-friendly interactive testing interface
 
 ---
-## 🔐 Authentication & Security
 
-Security and user identity verification are critical in **VibeDay's** backend architecture. The authentication system is designed with **robustness**, **extensibility**, and **developer-friendliness** in mind.
+## ✅ Status
+
+All backend features of the VibeDay app have been fully implemented and are production-ready:
+
+### 🔐 Authentication & Security
+- [x] Registration with email + password
+- [x] Email verification via token
+- [x] JWT-based login
+- [x] Password reset flow (request + form + token-based reset)
+- [x] AuthGuard protection for private routes
+- [x] Password hashing with bcrypt
+- [x] Secure token handling via headers
+- [x] HTTPS-ready deployment setup
+
+### 👤 User Management
+- [x] Create, read, update, and delete user accounts
+- [x] Get current logged-in user (`/auth/current-user`)
+
+### ⚙️ Preferences Module
+- [x] Save and update preferences (budget, radius, time windows, group size)
+- [x] Fetch preferences for current user
+
+### ❤️ Health Data Integration
+- [x] Submit health metrics (e.g., sleep, stress, blood pressure)
+- [x] Retrieve personal health data
+- [x] Integrate health context into AI suggestions
+
+### ☁️ Weather Module
+- [x] Get daily forecast by coordinates
+- [x] Get 7-day forecast (by city or coordinates)
+- [x] Get hourly forecasts
+- [x] Fetch forecast for a specific date
+
+### 🎫 Events Module
+- [x] Fetch local events via Ticketmaster API
+- [x] Filter events by date, radius, time, and size
+
+### 🚗 Directions Module
+- [x] Get travel duration & distance between two points
+- [x] Support for multiple transport modes (drive, walk, bike, transit)
+- [x] Resolve city from coordinates
+
+### 🤖 AI-Powered Suggestions
+- [x] Generate personalized activity suggestions
+- [x] Use real-time context: preferences, weather, events, health
+- [x] Return structured JSON with logic explanations
+
+### ✉️ Email Notifications
+- [x] Welcome email
+- [x] Email verification link
+- [x] Password reset link
+- [x] HTML templates via Hostinger SMTP
+
+### 🧪 Developer Experience
+- [x] Swagger (OpenAPI) documentation for all endpoints
+- [x] Global exception handling
+- [x] Class-validator for input validation
+- [x] DTOs and modular code structure
+
+### 🚀 Deployment
+- [x] Deployed on Vercel
+- [x] Custom domain + SSL via Hostinger DNS
 
 ---
 
-### 🛠️ Key Mechanisms
+## 🧑‍💻 Tech Stack
 
-- **JWT Authentication**  
-  All protected endpoints require a valid JSON Web Token (JWT), issued during login and verified by a global `AuthGuard`.
-
-- **Password Hashing**  
-  User passwords are securely hashed using **bcrypt** before being stored in the MySQL database.
-
-- **Email Verification**  
-  After registration, users must verify their email through a tokenized link sent via **SMTP**.
-
-- **Password Reset Flow**
-  1. User requests reset: `POST /auth/request-reset`
-  2. Tokenized link is sent via email
-  3. HTML reset form is served at: `GET /auth/reset-password`
-  4. New password is submitted via `POST /auth/reset-password`
-
-- **Access Control**  
-  Routes like preferences, health data, and suggestions are protected with `@UseGuards(AuthGuard)`.
-
-- **Token Storage**  
-  JWTs are stored client-side (e.g., secure storage on mobile) and included in request headers.
+| Component          | Technology / Service          |
+|--------------------|-------------------------------|
+| **Language**       | TypeScript                    |
+| **Backend**        | NestJS                        |
+| **Frontend Client**| Flutter                       |
+| **Database**       | MySQL (via Hostinger)         |
+| **ORM**            | TypeORM                       |
+| **Authentication** | JWT + bcrypt                  |
+| **Mailing**        | Nodemailer + Hostinger SMTP   |
+| **API Docs**       | Swagger / OpenAPI             |
+| **Weather Data**   | VisualCrossing API            |
+| **Event Search**   | Ticketmaster API              |
+| **Location**       | Google Directions API, Mapbox |
+| **AI Engine**      | OpenAI GPT-4                  |
+| **Deployment**     | Vercel (CI/CD) + Hostinger DNS|
 
 ---
 
-### 🔒 Security Best Practices
-
-- ✅ **HTTPS enforced** in deployment using Vercel + custom domain SSL
-- ✅ **DTO-based validation** using `class-validator` for all incoming payloads
-- ✅ **Global Exception Filters** for safe, consistent error handling
-- ✅ **Public vs. Protected Route Separation** to minimize attack surface
-
-
-
----
 ## 📘 API Endpoints Overview
 
 The API is fully documented using **Swagger (OpenAPI)** and accessible via `/api` in development.  
@@ -212,119 +256,47 @@ Interactive testing and full documentation are available via **Swagger UI** (`/a
 
 ---
 
+## 🔐 Authentication & Security
 
-## 🧑‍💻 Tech Stack
-
-| Component          | Technology / Service          |
-|--------------------|-------------------------------|
-| **Language**       | TypeScript                    |
-| **Backend**        | NestJS                        |
-| **Frontend Client**| Flutter                       |
-| **Database**       | MySQL (via Hostinger)         |
-| **ORM**            | TypeORM                       |
-| **Authentication** | JWT + bcrypt                  |
-| **Mailing**        | Nodemailer + Hostinger SMTP   |
-| **API Docs**       | Swagger / OpenAPI             |
-| **Weather Data**   | VisualCrossing API            |
-| **Event Search**   | Ticketmaster API              |
-| **Location**       | Google Directions API, Mapbox |
-| **AI Engine**      | OpenAI GPT-4                  |
-| **Deployment**     | Vercel (CI/CD) + Hostinger DNS|
+Security and user identity verification are critical in **VibeDay's** backend architecture. The authentication system is designed with **robustness**, **extensibility**, and **developer-friendliness** in mind.
 
 ---
 
-## 🛠️ Installation
+### 🛠️ Key Mechanisms
 
-### Klone das Projekt
-```bash
-git clone https://github.com/dein-nutzer/smart-activity-backend.git
-cd smart-activity-backend
-```
-### Project setup
+- **JWT Authentication**  
+  All protected endpoints require a valid JSON Web Token (JWT), issued during login and verified by a global `AuthGuard`.
 
-```bash
-$ npm install
-```
-### Compile and run the project
+- **Password Hashing**  
+  User passwords are securely hashed using **bcrypt** before being stored in the MySQL database.
 
-```bash
-# development
-$ npm run start
+- **Email Verification**  
+  After registration, users must verify their email through a tokenized link sent via **SMTP**.
 
-# watch mode
-$ npm run start:dev
+- **Password Reset Flow**
+  1. User requests reset: `POST /auth/request-reset`
+  2. Tokenized link is sent via email
+  3. HTML reset form is served at: `GET /auth/reset-password`
+  4. New password is submitted via `POST /auth/reset-password`
 
-# production mode
-$ npm run start:prod
-```
+- **Access Control**  
+  Routes like preferences, health data, and suggestions are protected with `@UseGuards(AuthGuard)`.
+
+- **Token Storage**  
+  JWTs are stored client-side (e.g., secure storage on mobile) and included in request headers.
+
+---
+
+### 🔒 Security Best Practices
+
+- ✅ **HTTPS enforced** in deployment using Vercel + custom domain SSL
+- ✅ **DTO-based validation** using `class-validator` for all incoming payloads
+- ✅ **Global Exception Filters** for safe, consistent error handling
+- ✅ **Public vs. Protected Route Separation** to minimize attack surface
 
 
 ---
-### 📁 .env Datei (Beispiel)
 
-```
-PORT=3000
-```
-
-
-
-#### DB  
-```
-DB_PORT=3306
-DB_HOST=srv972.hstgr.io
-DB_USERNAME=u252525807_SamrtAdmin
-DB_PASSWORD=SamrtActivity+SamrtAdmin2025.
-DB_DATABASE=u252525807_SamrtActivity
-```
-
-#### JWT
-```
-JWT_SECRET=
-JWT_EXPIRES_IN=
-```
-
-
-#### SMTP (Simple Mail Transfer Protocol)
-```
-SMTP_HOST=
-SMTP_PORT=
-SMTP_USER=
-SMTP_PASS=
-SMTP_FROM_NAME=
-```
-
-#### OpenAI API key for development environment
-```
-OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4.1-mini
-```
-
-#### OpenWeather API key for development environment
-```
-VISUAL_CROSSING_API_KEY=
-```
-
-#### Ticketmaster API key for development environment
-```
-TICKETMASTER_API_KEY=
-```
-
-#### Eventbrite API key for development environment
-```
-EVENTBRITE_API_KEY=
-```
-
-#### Directions API key for development environment
-```
-GOOGLE_MAPS_API_KEY=
-```
-
-#### Mapbox API key for development environment
-```
-MAPBOX_ACCESS_TOKEN=
-```
-
----
 
 ## 🧪 API Endpoints Overview
 The API is fully documented using Swagger (OpenAPI). Below is a summarized list of the most important endpoints organized by module:
@@ -501,73 +473,97 @@ http://localhost:3000/swagger
  ┗ 📜main.ts
 ```
 ---
+## 🛠️ Installation
+
+### Klone das Projekt
+```bash
+git clone https://github.com/dein-nutzer/smart-activity-backend.git
+cd smart-activity-backend
+```
+### Project setup
+
+```bash
+$ npm install
+```
+### Compile and run the project
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+
+---
+### 📁 .env Datei (Beispiel)
+
+```
+PORT=3000
+```
 
 
 
+#### DB  
+```
+DB_PORT=3306
+DB_HOST=srv972.hstgr.io
+DB_USERNAME=u252525807_SamrtAdmin
+DB_PASSWORD=SamrtActivity+SamrtAdmin2025.
+DB_DATABASE=u252525807_SamrtActivity
+```
+
+#### JWT
+```
+JWT_SECRET=
+JWT_EXPIRES_IN=
+```
 
 
-## ✅ Status
+#### SMTP (Simple Mail Transfer Protocol)
+```
+SMTP_HOST=
+SMTP_PORT=
+SMTP_USER=
+SMTP_PASS=
+SMTP_FROM_NAME=
+```
 
-All backend features of the VibeDay app have been fully implemented and are production-ready:
+#### OpenAI API key for development environment
+```
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-4.1-mini
+```
 
-### 🔐 Authentication & Security
-- [x] Registration with email + password
-- [x] Email verification via token
-- [x] JWT-based login
-- [x] Password reset flow (request + form + token-based reset)
-- [x] AuthGuard protection for private routes
-- [x] Password hashing with bcrypt
-- [x] Secure token handling via headers
-- [x] HTTPS-ready deployment setup
+#### OpenWeather API key for development environment
+```
+VISUAL_CROSSING_API_KEY=
+```
 
-### 👤 User Management
-- [x] Create, read, update, and delete user accounts
-- [x] Get current logged-in user (`/auth/current-user`)
+#### Ticketmaster API key for development environment
+```
+TICKETMASTER_API_KEY=
+```
 
-### ⚙️ Preferences Module
-- [x] Save and update preferences (budget, radius, time windows, group size)
-- [x] Fetch preferences for current user
+#### Eventbrite API key for development environment
+```
+EVENTBRITE_API_KEY=
+```
 
-### ❤️ Health Data Integration
-- [x] Submit health metrics (e.g., sleep, stress, blood pressure)
-- [x] Retrieve personal health data
-- [x] Integrate health context into AI suggestions
+#### Directions API key for development environment
+```
+GOOGLE_MAPS_API_KEY=
+```
 
-### ☁️ Weather Module
-- [x] Get daily forecast by coordinates
-- [x] Get 7-day forecast (by city or coordinates)
-- [x] Get hourly forecasts
-- [x] Fetch forecast for a specific date
+#### Mapbox API key for development environment
+```
+MAPBOX_ACCESS_TOKEN=
+```
 
-### 🎫 Events Module
-- [x] Fetch local events via Ticketmaster API
-- [x] Filter events by date, radius, time, and size
-
-### 🚗 Directions Module
-- [x] Get travel duration & distance between two points
-- [x] Support for multiple transport modes (drive, walk, bike, transit)
-- [x] Resolve city from coordinates
-
-### 🤖 AI-Powered Suggestions
-- [x] Generate personalized activity suggestions
-- [x] Use real-time context: preferences, weather, events, health
-- [x] Return structured JSON with logic explanations
-
-### ✉️ Email Notifications
-- [x] Welcome email
-- [x] Email verification link
-- [x] Password reset link
-- [x] HTML templates via Hostinger SMTP
-
-### 🧪 Developer Experience
-- [x] Swagger (OpenAPI) documentation for all endpoints
-- [x] Global exception handling
-- [x] Class-validator for input validation
-- [x] DTOs and modular code structure
-
-### 🚀 Deployment
-- [x] Deployed on Vercel
-- [x] Custom domain + SSL via Hostinger DNS
 
 ---
 
