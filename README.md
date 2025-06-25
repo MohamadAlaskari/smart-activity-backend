@@ -297,38 +297,6 @@ Security and user identity verification are critical in **VibeDay's** backend ar
 
 ---
 
-
-## 🧪 API Endpoints Overview
-The API is fully documented using Swagger (OpenAPI). Below is a summarized list of the most important endpoints organized by module:
-
-### 📥 `POST /auth/register`
-Registriert neuen Nutzer und sendet Verifizierungslink per Mail.  
-**Body:**
-```json
-{
-  "firstName": "John",
-  "lastName": "Doe",
-  "username": "johnny",
-  "email": "john@example.com",
-  "password": "123456"
-}
-```
-
-### ✅ `GET /auth/verify-email?token=...`
-Verifiziert den User anhand des Tokens. Gültig für 30 Minuten.
-
-### 🔐 `POST /auth/login`
-Gibt ein gültiges Access Token bei erfolgreichem Login zurück.
-
-```
-{
-  "email": "john@example.com",
-  "password": "123456"
-}
-```
-
----
-
 ## 📘 Swagger
 
 Alle Endpunkte sind dokumentiert unter:
