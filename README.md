@@ -473,16 +473,13 @@ $ npm run start:prod
 ```
 PORT=3000
 ```
-
-
-
 #### DB  
 ```
-DB_PORT=3306
-DB_HOST=srv972.hstgr.io
-DB_USERNAME=u252525807_SamrtAdmin
-DB_PASSWORD=SamrtActivity+SamrtAdmin2025.
-DB_DATABASE=u252525807_SamrtActivity
+DB_PORT=
+DB_HOST=
+DB_USERNAME=
+DB_PASSWORD=
+DB_DATABASE=
 ```
 
 #### JWT
