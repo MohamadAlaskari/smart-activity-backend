@@ -42,20 +42,24 @@ export class UserPreferencesService {
         const createdPrefs = await this.repo.save(newPrefs);
 
         return {
-            ...createdPrefs,
-            selectedVibes: this.safeJsonParse(createdPrefs.selectedVibes),
-            selectedLifeVibes: this.safeJsonParse(
-                createdPrefs.selectedLifeVibes,
-            ),
-            selectedExperienceTypes: this.safeJsonParse(
-                createdPrefs.selectedExperienceTypes,
-            ),
-            selectedTimeWindows: this.safeJsonParse(
-                createdPrefs.selectedTimeWindows,
-            ),
-            selectedGroupSizes: this.safeJsonParse(
-                createdPrefs.selectedGroupSizes,
-            ),
+            status: 'success',
+            message: 'User preferences created.',
+            data: {
+                ...createdPrefs,
+                selectedVibes: this.safeJsonParse(createdPrefs.selectedVibes),
+                selectedLifeVibes: this.safeJsonParse(
+                    createdPrefs.selectedLifeVibes,
+                ),
+                selectedExperienceTypes: this.safeJsonParse(
+                    createdPrefs.selectedExperienceTypes,
+                ),
+                selectedTimeWindows: this.safeJsonParse(
+                    createdPrefs.selectedTimeWindows,
+                ),
+                selectedGroupSizes: this.safeJsonParse(
+                    createdPrefs.selectedGroupSizes,
+                ),
+            },
         };
     }
 

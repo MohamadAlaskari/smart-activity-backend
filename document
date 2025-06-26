@@ -1,0 +1,9 @@
+📦core
+ ┗ 📂ai
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜prompt.dto.ts
+ ┃ ┃ ┣ 📜structured-suggestions.dto.ts
+ ┃ ┃ ┗ 📜suggestion-result.dto.ts
+ ┃ ┣ 📜ai.controller.ts
+ ┃ ┣ 📜ai.module.ts
+ ┃ ┗ 📜ai.service.ts
